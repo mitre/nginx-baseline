@@ -68,36 +68,31 @@ control "V-13732" do
 
   disable_symlinks   on;"
 
-  # START_DESCRIBE V-13732
+  begin
+    nginx_conf_handle = nginx_conf(NGINX_CONF_FILE)
 
-  nginx_conf(NGINX_CONF_FILE).params['http'].each do |http|
-    describe http['disable_symlinks'] do
-      it { should cmp [['on']] }
-    end
-  end
-
-  if !nginx_conf(NGINX_CONF_FILE).http.nil?
-    nginx_conf(NGINX_CONF_FILE).http.each do |http|
-      if !http['server'].nil?
-        http['server'].each do |server|
-          if !server['disable_symlinks'].nil?
-            describe server['disable_symlinks'] do
-              it { should cmp [['on']] }
-            end
-          end
-          if !server['location'].nil?
-            server['location'].each do |location|
-              if !location['disable_symlinks'].nil?
-                describe location['disable_symlinks'] do
-                  it { should cmp [['on']] }
-                end
-              end
-            end
-          end
-        end
+    nginx_conf_handle.http.entries.each do |http|
+      describe http.params['disable_symlinks'] do
+        it { should cmp [['on']] }
       end
     end
+
+    nginx_conf_handle.servers.entries.each do |server|
+      describe server.params['disable_symlinks'] do
+        it { should cmp [['on']] }
+      end unless server.params['disable_symlinks'].nil?
+    end
+
+    nginx_conf_handle.locations.entries.each do |location|
+      describe location.params['disable_symlinks'] do
+        it { should cmp [['on']] }
+      end unless location.params['disable_symlinks'].nil?
+    end
+
+  rescue Exception => msg
+    describe "Exception: #{msg}" do
+      it { should be_nil}
+    end
   end
-  # STOP_DESCRIBE V-13732
 
 end

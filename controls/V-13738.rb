@@ -63,25 +63,27 @@ control "V-13738" do
   tag "fix": "Edit the configuration file to set the client_header_buffer_size
   to 1k or less."
 
-  # START_DESCRIBE V-13738
-  nginx_conf(NGINX_CONF_FILE).http.each do |http|
-    describe http['client_header_buffer_size'].join.to_i do
-      it { should cmp <= '1k'.to_i }
-    end
-  end
+  begin
+    nginx_conf_handle = nginx_conf(NGINX_CONF_FILE)
 
-  if !nginx_conf(NGINX_CONF_FILE).http.nil?
-    nginx_conf(NGINX_CONF_FILE).http.each do |http|
-      if !http['server'].nil?
-        http['server'].each do |server|
-          if !server['client_header_buffer_size'].nil?
-            describe server['client_header_buffer_size'].join.to_i do
-              it { should cmp <= '1k'.to_i }
-            end
-          end
-        end
+    nginx_conf_handle.http.entries.each do |http|
+      describe http.params['client_header_buffer_size'] do
+        it { should_not be_nil}
       end
+      describe http.params['client_header_buffer_size'].join.to_i do
+        it { should cmp <= '1k'.to_i }
+      end unless http.params['client_header_buffer_size'].nil?
+    end
+
+    nginx_conf_handle.servers.entries.each do |server|
+      describe server.params['client_header_buffer_size'].join.to_i do
+        it { should cmp <= '1k'.to_i }
+      end unless server.params['client_header_buffer_size'].nil?
+    end
+
+  rescue Exception => msg
+    describe "Exception: #{msg}" do
+      it { should be_nil}
     end
   end
-  # STOP_DESCRIBE V-13738
 end

@@ -124,11 +124,11 @@ EOH
 #!/bin/sh
 python -c 'import sys; sys.path.insert(0, "/usr/share/yum-cli"); import cli; list = cli.YumBaseCli().returnPkgLists(["updates"]);res = ["{\\"name\\":\\""+x.name+"\\", \\"version\\":\\""+x.version+"-"+x.release+"\\",\\"arch\\":\\""+x.arch+"\\",\\"repository\\":\\""+x.repo.id+"\\"}" for x in list.updates]; print "{\\"available\\":["+",".join(res)+"]}"'
 EOH
-    puts rhel_updates
+    # puts rhel_updates
     cmd = @inspec.bash(rhel_updates)
     unless cmd.exit_status == 0
       # essentially we want https://github.com/chef/inspec/issues/1205
-      STDERR.puts 'Could not determine patch status.'
+      # STDERR.puts 'Could not determine patch status.'
       return nil
     end
 
