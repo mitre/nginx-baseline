@@ -50,7 +50,7 @@ control "V-6724" do
   tag "stig_id": "WG520 A22"
   tag "nist": ["CM-6", "Rev_4"]
 
-  tag "Enter the following command:
+  tag "check": "Enter the following command:
 
   grep ""server_tokens"" on the nginx.conf file and any separate included
   configuration files
@@ -63,6 +63,8 @@ control "V-6724" do
   the server response header or the directive does not exist, this is a finding.
 
   Note: The default value is set to on."
+
+  tag "fix": "server_tokens must be set to 'off'."
 
   begin
     nginx_conf_handle = nginx_conf(NGINX_CONF_FILE)
