@@ -66,9 +66,14 @@ control "V-2236" do
   that the compiler is restricted to only administrative users."
 
   begin
-    yum_compiler_list = command('yum search all compiler').stdout.scan(/^(\S+)\s:\s/).flatten
+    if inspec.os.family.eql?("redhat")
+      compiler_list = command('yum search all compiler').stdout.scan(/^(\S+)\s:\s/).flatten
+    elsif inspec.os.family.eql?("debian")
+      compiler_list = command('apt-cache search compiler').stdout.scan(/^(\S+)\s-\s/).flatten
+    end
 
-    yum_compiler_list.each do |compiler|
+
+    compiler_list.each do |compiler|
       describe package(compiler) do
         it { should_not be_installed }
       end
