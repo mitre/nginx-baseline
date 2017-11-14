@@ -39,16 +39,27 @@ NGINX_EXCEPTION_FILES= attribute(
 
 NGINX_OWNER = attribute(
   'nginx_owner',
-  description: 'Nginx owner',
+  description: "The Nginx owner",
   default: 'nginx'
-  )
+)
+
+SYS_ADMIN = attribute(
+  'sys_admin',
+  description: "The system adminstrator",
+  default: ['root']
+)
 
 NGINX_GROUP = attribute(
   'nginx_group',
-  description: 'Nginx owner',
+  description: "The Nginx group",
   default: 'nginx'
-  )
+)
 
+SYS_ADMIN_GROUP = attribute(
+  'sys_admin_group',
+  description: "The system adminstrator group",
+  default: ['root']
+)
 
 only_if do
   command('nginx').exist?
@@ -95,6 +106,10 @@ control "V-13621" do
   web server, this is a finding."
 
   begin
+
+    authorized_sa_user_list = SYS_ADMIN.clone << NGINX_OWNER
+    authorized_sa_group_list = SYS_ADMIN_GROUP.clone << NGINX_GROUP
+
     NGINX_DISALLOWED_FILE_LIST.each do |file|
       describe file(file) do
         it { should_not exist }
@@ -103,9 +118,8 @@ control "V-13621" do
 
     NGINX_EXCEPTION_FILES.each do |file|
       describe file(file) do
-        it { should exist }
-        it { should be_owned_by NGINX_OWNER }
-        it { should be_grouped_into NGINX_GROUP }
+        its('owner') { should be_in authorized_sa_user_list }
+        its('group') { should be_in authorized_sa_group_list }
         its('mode') { should cmp '640' }
       end
     end

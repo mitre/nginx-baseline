@@ -25,7 +25,7 @@ uri: http://iase.disa.mil
 SYS_ADMIN = attribute(
   'sys_admin',
   description: "The system adminstrator",
-  default: 'root'
+  default: ['root']
 )
 
 NGINX_OWNER = attribute(
@@ -83,10 +83,11 @@ control "V-2247" do
 
 
   begin
-    users.shells(/bash/).usernames.each do |account|
-      describe account do
-        it { should match %r(#{SYS_ADMIN}|#{NGINX_OWNER}) }
-      end
+  
+    authorized_sa_user_list = SYS_ADMIN.clone << NGINX_OWNER
+
+    describe users.shells(/bash/).usernames do
+      it { should be_in authorized_sa_user_list}
     end
 
     if users.shells(/bash/).usernames.empty?

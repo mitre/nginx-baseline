@@ -37,7 +37,7 @@ NGINX_OWNER = attribute(
 SYS_ADMIN = attribute(
   'sys_admin',
   description: "The system adminstrator",
-  default: 'root'
+  default: ['root']
 )
 
 NGINX_GROUP = attribute(
@@ -49,7 +49,7 @@ NGINX_GROUP = attribute(
 SYS_ADMIN_GROUP = attribute(
   'sys_admin_group',
   description: "The system adminstrator group",
-  default: 'root'
+  default: ['root']
 )
 
 only_if do
@@ -102,13 +102,17 @@ control "V-2248" do
   finding. "
 
   begin
+
+    authorized_sa_user_list = SYS_ADMIN.clone << NGINX_OWNER
+    authorized_sa_group_list = SYS_ADMIN_GROUP.clone << NGINX_GROUP
+
     nginx_conf_handle = nginx_conf(NGINX_CONF_FILE)
     nginx_conf_handle.params
 
     nginx_conf_handle.contents.keys.each do |file|
       describe file(file) do
-        its('owner') { should match %r(#{SYS_ADMIN}|#{NGINX_OWNER}) }
-        its('group') { should match %r(#{SYS_ADMIN_GROUP}|#{NGINX_GROUP}) }
+        its('owner') { should be_in authorized_sa_user_list }
+        its('group') { should be_in authorized_sa_group_list }
         its('mode')  { should cmp <= 0660 }
       end
     end

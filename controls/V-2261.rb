@@ -61,6 +61,11 @@ control "V-2261" do
     describe port(25) do
       it { should_not be_listening }
     end
+
+    describe package('postfix') do
+      it { should_not be_installed }
+    end
+
   rescue Exception => msg
     describe "Exception: #{msg}" do
       it { should be_nil}

@@ -37,7 +37,7 @@ NGINX_OWNER = attribute(
 SYS_ADMIN = attribute(
   'sys_admin',
   description: "The system adminstrator",
-  default: 'root'
+  default: ['root']
 )
 
 NGINX_GROUP = attribute(
@@ -49,7 +49,7 @@ NGINX_GROUP = attribute(
 SYS_ADMIN_GROUP = attribute(
   'sys_admin_group',
   description: "The system adminstrator group",
-  default: 'root'
+  default: ['root']
 )
 
 only_if {
@@ -111,10 +111,13 @@ control "V-2259" do
   "
 
   begin
+    authorized_sa_user_list = SYS_ADMIN.clone << NGINX_OWNER
+    authorized_sa_group_list = SYS_ADMIN_GROUP.clone << NGINX_GROUP
+
     describe.one do
       describe file('/usr/sbin/nginx') do
-        it { should be_owned_by SYS_ADMIN }
-        its('group') { should cmp SYS_ADMIN_GROUP }
+        its('owner') { should be_in authorized_sa_user_list }
+        its('group') { should be_in authorized_sa_group_list }
         its('mode') { should cmp <= 550 }
       end
       describe file('/usr/sbin/nginx') do
@@ -125,8 +128,8 @@ control "V-2259" do
     end
     describe.one do
       describe file('/etc/nginx/') do
-        it { should be_owned_by SYS_ADMIN }
-        its('group') { should cmp SYS_ADMIN_GROUP }
+        its('owner') { should be_in authorized_sa_user_list }
+        its('group') { should be_in authorized_sa_group_list }
         its('mode') { should cmp <= 770 }
       end
       describe file('/etc/nginx/') do
@@ -137,8 +140,8 @@ control "V-2259" do
     end
     describe.one do
       describe file('/etc/nginx/conf.d') do
-        it { should be_owned_by SYS_ADMIN }
-        its('group') { should cmp SYS_ADMIN_GROUP }
+        its('owner') { should be_in authorized_sa_user_list }
+        its('group') { should be_in authorized_sa_group_list }
         its('mode') { should cmp <= 770 }
       end
       describe file('/etc/nginx/conf.d') do
@@ -149,8 +152,8 @@ control "V-2259" do
     end
     describe.one do
       describe file('/etc/nginx/modules') do
-        it { should be_owned_by SYS_ADMIN }
-        its('group') { should cmp SYS_ADMIN_GROUP }
+        its('owner') { should be_in authorized_sa_user_list }
+        its('group') { should be_in authorized_sa_group_list }
         its('mode') { should cmp <= 770 }
       end
       describe file('/etc/nginx/modules') do
@@ -161,8 +164,8 @@ control "V-2259" do
     end
     describe.one do
       describe file('/usr/share/nginx/html') do
-        it { should be_owned_by SYS_ADMIN }
-        its('group') { should cmp SYS_ADMIN_GROUP }
+        its('owner') { should be_in authorized_sa_user_list }
+        its('group') { should be_in authorized_sa_group_list }
         its('mode') { should cmp <= 775 }
       end
       describe file('/usr/share/nginx/html') do
@@ -173,8 +176,8 @@ control "V-2259" do
     end
     describe.one do
       describe file('/var/log/nginx') do
-        it { should be_owned_by SYS_ADMIN }
-        its('group') { should cmp SYS_ADMIN_GROUP }
+        its('owner') { should be_in authorized_sa_user_list }
+        its('group') { should be_in authorized_sa_group_list }
         its('mode') { should cmp <= 750 }
       end
       describe file('/var/log/nginx') do

@@ -37,7 +37,7 @@ NGINX_OWNER = attribute(
 SYS_ADMIN = attribute(
   'sys_admin',
   description: "The system adminstrator",
-  default: 'root'
+  default: ['root']
 )
 
 NGINX_GROUP = attribute(
@@ -49,7 +49,7 @@ NGINX_GROUP = attribute(
 SYS_ADMIN_GROUP = attribute(
   'sys_admin_group',
   description: "The system adminstrator group",
-  default: 'root'
+  default: ['root']
 )
 
 only_if do
@@ -88,6 +88,10 @@ control "V-26305" do
   file folder. "
 
   begin
+
+    authorized_sa_user_list = SYS_ADMIN.clone << NGINX_OWNER
+    authorized_sa_group_list = SYS_ADMIN_GROUP.clone << NGINX_GROUP
+
     webserver_roots = []
     nginx_conf_handle = nginx_conf(NGINX_CONF_FILE)
 
@@ -105,8 +109,8 @@ control "V-26305" do
 
     describe file(nginx_conf_handle.params['pid'].join) do
       it { should exist }
-      its ('owner') { should match %r(#{NGINX_OWNER}|#{SYS_ADMIN}) }
-      its ('group') { should match %r(#{NGINX_GROUP}|#{SYS_ADMIN_GROUP}) }
+      its('owner') { should be_in authorized_sa_user_list }
+      its('group') { should be_in authorized_sa_group_list }
       its ('mode')  { should cmp <= 0660 }
     end unless nginx_conf_handle.params['pid'].nil?
 

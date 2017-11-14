@@ -31,7 +31,7 @@ NGINX_OWNER = attribute(
 SYS_ADMIN = attribute(
   'sys_admin',
   description: "The system adminstrator",
-  default: 'root'
+  default: ['root']
 )
 
 NGINX_GROUP = attribute(
@@ -43,7 +43,7 @@ NGINX_GROUP = attribute(
 SYS_ADMIN_GROUP = attribute(
   'sys_admin_group',
   description: "The system adminstrator group",
-  default: 'root'
+  default: ['root']
 )
 
 only_if do
@@ -87,14 +87,16 @@ control "V-2255" do
   should own the htpasswd file and permissions should be set to 550."
 
   begin
+
+    authorized_sa_user_list = SYS_ADMIN.clone << NGINX_OWNER
+    authorized_sa_group_list = SYS_ADMIN_GROUP.clone << NGINX_GROUP
+
     htpasswd = command('find / -name .htpasswd').stdout.chomp
     htpasswd.split.each do |htpwd|
       describe file(htpwd) do
         its('mode') { should cmp <= 0550 }
-      end
-      describe file(htpwd) do
-        its('owner') { should match %r(#{SYS_ADMIN}|#{NGINX_OWNER}) }
-        its('group') { should match %r(#{SYS_ADMIN_GROUP}|#{NGINX_GROUP}) }
+        its('owner') { should be_in authorized_sa_user_list }
+        its('group') { should be_in authorized_sa_group_list }
       end
     end
 

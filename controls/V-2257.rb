@@ -26,7 +26,7 @@ uri: http://iase.disa.mil
 SYS_ADMIN = attribute(
   'sys_admin',
   description: "The system adminstrator",
-  default: 'root'
+  default: ['root']
 )
 
 NGINX_OWNER = attribute(
@@ -85,10 +85,10 @@ control "V-2257" do
   rights to the web server in the web site SOP or in an equivalent document."
 
   begin
-    DOCUMENTED_ADMINS = [SYS_ADMIN, NGINX_OWNER]
+    authorized_sa_user_list = SYS_ADMIN.clone << NGINX_OWNER
 
     describe nginx_conf(NGINX_CONF_FILE).params['user'].flatten do
-      it{ should be_in DOCUMENTED_ADMINS}
+      it{ should be_in authorized_sa_user_list}
     end
 
   rescue Exception => msg

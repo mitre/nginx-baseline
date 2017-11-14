@@ -37,7 +37,7 @@ NGINX_OWNER = attribute(
 SYS_ADMIN = attribute(
   'sys_admin',
   description: "The system adminstrator",
-  default: 'root'
+  default: ['root']
 )
 
 NGINX_GROUP = attribute(
@@ -49,7 +49,7 @@ NGINX_GROUP = attribute(
 SYS_ADMIN_GROUP = attribute(
   'sys_admin_group',
   description: "The system adminstrator group",
-  default: 'root'
+  default: ['root']
 )
 
 
@@ -105,6 +105,10 @@ control "V-2256" do
   site that must execute the directives in .htacces."
 
   begin
+
+    authorized_sa_user_list = SYS_ADMIN.clone << NGINX_OWNER
+    authorized_sa_group_list = SYS_ADMIN_GROUP.clone << NGINX_GROUP
+    
     access_control_files = [ '.htaccess',
                             '.htpasswd']
     nginx_conf_handle = nginx_conf(NGINX_CONF_FILE)
@@ -121,8 +125,8 @@ control "V-2256" do
 
       file_path.split.each do |file|
         describe file(file) do
-          its('owner') { should match %r(#{SYS_ADMIN}|#{NGINX_OWNER}) }
-          its('group') { should match %r(#{SYS_ADMIN_GROUP}|#{NGINX_GROUP}) }
+        its('owner') { should be_in authorized_sa_user_list }
+        its('group') { should be_in authorized_sa_group_list }
           its('mode')  { should cmp <= 0660 }
         end
       end
@@ -130,8 +134,8 @@ control "V-2256" do
 
     nginx_conf_handle.contents.keys.each do |file|
       describe file(file) do
-        its('owner') { should match %r(#{SYS_ADMIN}|#{NGINX_OWNER}) }
-        its('group') { should match %r(#{SYS_ADMIN_GROUP}|#{NGINX_GROUP}) }
+        its('owner') { should be_in authorized_sa_user_list }
+        its('group') { should be_in authorized_sa_group_list }
         its('mode')  { should cmp <= 0660 }
       end
     end
@@ -160,8 +164,8 @@ control "V-2256" do
 
     webserver_roots.each do |directory|
       describe file(directory) do
-        its('owner') { should match %r(#{SYS_ADMIN}|#{NGINX_OWNER}) }
-        its('group') { should match %r(#{SYS_ADMIN_GROUP}|#{NGINX_GROUP}) }
+        its('owner') { should be_in authorized_sa_user_list }
+        its('group') { should be_in authorized_sa_group_list }
         its('sticky'){ should be true }
       end
     end
