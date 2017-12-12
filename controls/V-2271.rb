@@ -25,7 +25,7 @@ uri: http://iase.disa.mil
 MONITORINGSOFTWARE = attribute(
   'monitoring_software',
   description: "Monitoring software for CGI or equivalent programs",
-  default: 'audit'
+  default: ['audit', 'auditd']
 )
 
 only_if do
@@ -67,8 +67,12 @@ control "V-2271" do
   batch file that would identify a change in the file."
 
   begin
-    describe package(MONITORINGSOFTWARE) do
-      it{ should be_installed }
+    describe.one do
+      MONITORINGSOFTWARE.each do |software|
+        describe package(software) do
+          it{ should be_installed }
+        end
+      end
     end
   rescue Exception => msg
     describe "Exception: #{msg}" do

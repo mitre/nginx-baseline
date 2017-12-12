@@ -52,7 +52,7 @@ authorized_user_list:
     ]
 
 #description: Monitoring software for CGI or equivalent programs,
-monitoring_software: 'audit'
+monitoring_software: ['audit', 'auditd']
 
 #description: List of allowed services
 allowed_services_list:
