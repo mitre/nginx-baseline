@@ -303,7 +303,9 @@ ALLOWED_PACKAGES_LIST= attribute(
              "tzdata",
              "make",
              "tcp_wrappers-libs",
-             "gpg-pubkey"]
+             "gpg-pubkey",
+	     "unzip",
+             "wget"]
 )
 
 DISALLOWED_PACKAGES_LIST= attribute(
