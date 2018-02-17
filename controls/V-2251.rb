@@ -315,7 +315,7 @@ DISALLOWED_PACKAGES_LIST= attribute(
 )
 
 only_if do
-  command('nginx').exist?
+  package('nginx').installed?
 end
 
 control "V-2251" do

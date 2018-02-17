@@ -29,7 +29,7 @@ DISALLOWED_COMPILER_LIST = attribute(
 )
 
 only_if do
-  command('nginx').exist?
+  package('nginx').installed?
 end
 
 control "V-2236" do

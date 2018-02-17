@@ -36,7 +36,7 @@ DOD_APPROVED_PKIS= attribute(
 )
 
 only_if do
-  command('nginx').exist?
+  package('nginx').installed?
 end
 
 control "V-13620" do

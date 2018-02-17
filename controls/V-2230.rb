@@ -35,7 +35,7 @@ NGINX_BACKUP_REPOSITORY= attribute(
 )
 
 only_if do
-  command('nginx').exist?
+  package('nginx').installed?
 end
 
 control "V-2230" do

@@ -29,7 +29,7 @@ NGINX_PATH= attribute(
 )
 
 only_if do
-  command('nginx').exist?
+  package('nginx').installed?
 end
 
 control "V-26294" do

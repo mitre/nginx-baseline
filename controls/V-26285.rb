@@ -61,7 +61,7 @@ NGINX_UNAUTHORIZED_MODULES= attribute(
 )
 
 only_if do
-  command('nginx').exist?
+  package('nginx').installed?
 end
 
 control "V-26285" do

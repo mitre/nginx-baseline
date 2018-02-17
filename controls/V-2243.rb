@@ -36,7 +36,7 @@ NGINX_CONF_FILE= attribute(
 )
 
 only_if do
-  command('nginx').exist?
+  package('nginx').installed?
 end
 
 control "V-2243" do

@@ -23,7 +23,7 @@ uri: http://iase.disa.mil
 =end
 
 only_if do
-  command('nginx').exist?
+  package('nginx').installed?
 end
 
 control "V-13613" do

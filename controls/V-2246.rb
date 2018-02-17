@@ -36,7 +36,7 @@ NGINX_PATH= attribute(
 )
 
 only_if do
-  command('nginx').exist?
+  package('nginx').installed?
 end
 
 
