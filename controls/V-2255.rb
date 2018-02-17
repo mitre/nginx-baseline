@@ -47,7 +47,7 @@ SYS_ADMIN_GROUP = attribute(
 )
 
 only_if do
-  package('nginx').installed?
+  package('nginx').installed? or command('nginx').exist?
 end
 
 control "V-2255" do
@@ -108,7 +108,7 @@ control "V-2255" do
 
   rescue Exception => msg
     describe "Exception: #{msg}" do
-      it { should be_nil}
+      it { should be_nil }
     end
   end
 end

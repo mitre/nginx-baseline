@@ -22,7 +22,7 @@ uri: http://iase.disa.mil
 -----------------
 =end
 
-NGINX_CONF_FILE= attribute(
+NGINX_CONF_FILE = attribute(
   'nginx_conf_file',
   description: 'Path for the nginx configuration file',
   default: "/etc/nginx/nginx.conf"
@@ -36,7 +36,7 @@ DOD_APPROVED_PKIS= attribute(
 )
 
 only_if do
-  package('nginx').installed?
+  package('nginx').installed? or command('nginx').exist?
 end
 
 control "V-13620" do
@@ -93,36 +93,39 @@ control "V-13620" do
 
     nginx_conf_handle.http.entries.each do |http|
       describe http.params['ssl_client_certificate'] do
-        it { should_not be_nil}
+        it { should_not be_nil }
       end
       http.params['ssl_client_certificate'].each do |cert|
         describe x509_certificate(cert.join) do
-          it { should_not be_nil}
-          its('subject.C') { should cmp 'US'}
-          its('subject.O') { should cmp 'U.S. Government'}
+          it { should_not be_nil }
+
+          its('subject.C') { should cmp 'US' }
+          its('subject.O') { should cmp 'U.S. Government' }
         end
         describe x509_certificate(cert.join).subject.CN[0..2] do
-          it { should be_in DOD_APPROVED_PKIS}
+          it { should be_in DOD_APPROVED_PKIS }
         end
       end unless http.params['ssl_client_certificate'].nil?
     end
 
+    #TODO: Update these per feedback from David
     nginx_conf_handle.servers.entries.each do |server|
       server.params['ssl_client_certificate'].each do |cert|
         describe x509_certificate(cert.join) do
-          it { should_not be_nil}
-          its('subject.C') { should cmp 'US'}
-          its('subject.O') { should cmp 'U.S. Government'}
+          it { should_not be_nil }
+
+          its('subject.C') { should cmp 'US' }
+          its('subject.O') { should cmp 'U.S. Government' }
         end
         describe x509_certificate(cert.join).subject.CN[0..2] do
-          it { should be_in DOD_APPROVED_PKIS}
+          it { should be_in DOD_APPROVED_PKIS }
         end
       end unless server.params['ssl_client_certificate'].nil?
     end
 
   rescue Exception => msg
     describe "Exception: #{msg}" do
-      it { should be_nil}
+      it { should be_nil }
     end
   end
 end

@@ -23,14 +23,13 @@ uri: http://iase.disa.mil
 =end
 
 
-NGINX_DISALLOWED_FILE_LIST= attribute(
+NGINX_DISALLOWED_FILE_LIST = attribute(
   'nginx_disallowed_file_list',
   description: 'File list of  documentation, sample code, example applications, and tutorials.',
-  default: [ "/usr/share/man/man8/nginx.8.gz"
-           ]
+  default: ["/usr/share/man/man8/nginx.8.gz"]
 )
 
-NGINX_EXCEPTION_FILES= attribute(
+NGINX_EXCEPTION_FILES = attribute(
   'nginx_allowed_file_list',
   description: 'File list of allowed documentation, sample code, example applications, and tutorials.',
   default: [
@@ -62,7 +61,7 @@ SYS_ADMIN_GROUP = attribute(
 )
 
 only_if do
-  package('nginx').installed?
+  package('nginx').installed? or command('nginx').exist?
 end
 
 control "V-13621" do
@@ -125,7 +124,7 @@ control "V-13621" do
     end
   rescue Exception => msg
     describe "Exception: #{msg}" do
-      it { should be_nil}
+      it { should be_nil }
     end
   end
 end

@@ -22,13 +22,13 @@ uri: http://iase.disa.mil
 -----------------
 =end
 
-NGINX_CONF_FILE= attribute(
+NGINX_CONF_FILE = attribute(
   'nginx_conf_file',
   description: 'Path for the nginx configuration file',
   default: "/etc/nginx/nginx.conf"
 )
 
-OCSP_SERVER= attribute(
+OCSP_SERVER = attribute(
   'ocsp_server',
   description: 'domain and port to the OCSP Server ',
   default: 'login.live.com:443'
@@ -103,7 +103,7 @@ control "V-13672" do
 
     nginx_conf_handle.http.entries.each do |http|
       describe http.params['ssl_crl'] do
-        it { should_not be_nil}
+        it { should_not be_nil }
       end
       http.params['ssl_crl'].each do |cert|
         describe file(cert.join) do
@@ -128,7 +128,7 @@ control "V-13672" do
 
   rescue Exception => msg
     describe "Exception: #{msg}" do
-      it { should be_nil}
+      it { should be_nil }
     end
   end
 end

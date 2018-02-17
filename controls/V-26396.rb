@@ -22,14 +22,14 @@ uri: http://iase.disa.mil
 -----------------
 =end
 
-NGINX_CONF_FILE= attribute(
+NGINX_CONF_FILE = attribute(
   'nginx_conf_file',
   description: 'Path for the nginx configuration file',
   default: "/etc/nginx/nginx.conf"
 )
 
 only_if do
-  package('nginx').installed?
+  package('nginx').installed? or command('nginx').exist?
 end
 
 control "V-26396" do
@@ -77,20 +77,22 @@ control "V-26396" do
     nginx_conf(NGINX_CONF_FILE).locations.entries.each do |location|
       unless location.params["_"].eql?(["/"])
         describe location.params['if'] do
-          it { should_not be_nil}
+          it { should_not be_nil }
+
         end
         location.params['if'].each do |ifcondition|
           describe ifcondition do
-            it { should_not be_nil}
+            it { should_not be_nil }
+
             its(['_']) { should cmp ["($request_method", "!~", "^(GET|PUT|POST)$", ")"]}
-            its(['return']) { should cmp [["444"]]}
+            its(['return']) { should cmp [["444"]] }
           end
         end unless location.params['if'].nil?
       end
     end
   rescue Exception => msg
     describe "Exception: #{msg}" do
-      it { should be_nil}
+      it { should be_nil }
     end
   end
 

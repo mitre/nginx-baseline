@@ -29,14 +29,14 @@ DMZ_SUBNET= attribute(
   default: '62.0.0.0/24'
 )
 
-NGINX_CONF_FILE= attribute(
+NGINX_CONF_FILE = attribute(
   'nginx_conf_file',
   description: 'Path for the nginx configuration file',
   default: "/etc/nginx/nginx.conf"
 )
 
 only_if do
-  package('nginx').installed?
+  package('nginx').installed? or command('nginx').exist?
 end
 
 control "V-2243" do
@@ -94,7 +94,7 @@ control "V-2243" do
 
   rescue Exception => msg
     describe "Exception: #{msg}" do
-      it { should be_nil}
+      it { should be_nil }
     end
   end
 end

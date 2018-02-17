@@ -23,14 +23,14 @@ uri: http://iase.disa.mil
 =end
 
 
-NGINX_CONF_FILE= attribute(
+NGINX_CONF_FILE = attribute(
   'nginx_conf_file',
   description: 'Path for the nginx configuration file',
   default: "/etc/nginx/nginx.conf"
 )
 
 only_if do
-  package('nginx').installed?
+  package('nginx').installed? or command('nginx').exist?
 end
 
 control "V-13724" do
@@ -85,14 +85,15 @@ control "V-13724" do
 
     nginx_conf_handle.http.entries.each do |http|
       describe http.params['client_header_timeout'] do
-        it { should_not be_nil}
+        it { should_not be_nil }
       end
       describe http.params['client_header_timeout'].flatten do
         it { should cmp <= 10 }
       end unless http.params['client_header_timeout'].nil?
 
       describe http.params['client_body_timeout'] do
-        it { should_not be_nil}
+        it { should_not be_nil }
+
       end
       describe http.params['client_body_timeout'].flatten do
         it { should cmp <= 10 }
@@ -111,7 +112,7 @@ control "V-13724" do
 
   rescue Exception => msg
     describe "Exception: #{msg}" do
-      it { should be_nil}
+      it { should be_nil }
     end
   end
 end

@@ -22,14 +22,14 @@ uri: http://iase.disa.mil
 -----------------
 =end
 
-NGINX_CONF_FILE= attribute(
+NGINX_CONF_FILE = attribute(
   'nginx_conf_file',
   description: 'Path for the nginx configuration file',
   default: "/etc/nginx/nginx.conf"
 )
 
 only_if do
-  package('nginx').installed?
+  package('nginx').installed? or command('nginx').exist?
 end
 
 control "V-60707" do
@@ -121,7 +121,7 @@ control "V-60707" do
 
     nginx_conf_handle.http.entries.each do |http|
       describe http.params['ssl_prefer_server_ciphers'] do
-        it { should cmp [['on']]}
+        it { should cmp [['on']] }
       end
       describe http.params['ssl_ciphers'] do
         it { should_not be_nil }
@@ -130,35 +130,35 @@ control "V-60707" do
       unless http.params['ssl_ciphers'].nil?
         disabled_ssl_ciphers.each do |cipher|
           describe http.params['ssl_ciphers'].join do
-            it { should match "!#{cipher}"}
+            it { should match "!#{cipher}" }
           end
         end
         describe http.params['ssl_ciphers'].join do
-          it { should match '@STRENGTH'}
+          it { should match '@STRENGTH' }
         end
       end
     end
 
     nginx_conf_handle.servers.entries.each do |server|
       describe server.params['ssl_prefer_server_ciphers'] do
-        it { should cmp [['on']]}
+        it { should cmp [['on']] }
       end unless server.params['ssl_prefer_server_ciphers'].nil?
 
       unless server.params['ssl_ciphers'].nil?
         disabled_ssl_ciphers.each do |cipher|
           describe server.params['ssl_ciphers'].join do
-            it { should match "!#{cipher}"}
+            it { should match "!#{cipher}" }
           end
         end
         describe server.params['ssl_ciphers'].join do
-          it { should match '@STRENGTH'}
+          it { should match '@STRENGTH' }
         end
       end
     end
 
   rescue Exception => msg
     describe "Exception: #{msg}" do
-      it { should be_nil}
+      it { should be_nil }
     end
   end
 

@@ -22,7 +22,7 @@ uri: http://iase.disa.mil
 -----------------
 =end
 
-ALLOWED_SERVICES_LIST= attribute(
+ALLOWED_SERVICES_LIST = attribute(
   'allowed_services_list',
   description: 'Path for the nginx configuration file',
   default: [ "auditd",
@@ -127,23 +127,20 @@ ALLOWED_SERVICES_LIST= attribute(
              "systemd-vconsole-setup"]
 )
 
-DISALLOWED_SERVICES_LIST= attribute(
+DISALLOWED_SERVICES_LIST = attribute(
   'disallowed_services_list',
   description: 'List of disallowed servies',
-  default: ['mysql',
-            'postgres',
-            'named'
-           ]
+  default: ['mysql','postgres','named']
 )
 
-NGINX_CONF_FILE= attribute(
+NGINX_CONF_FILE = attribute(
   'nginx_conf_file',
   description: 'define path for the nginx configuration file',
   default: "/etc/nginx/nginx.conf"
 )
 
 only_if do
-  package('nginx').installed?
+  package('nginx').installed? or command('nginx').exist?
 end
 
 control "V-6577" do
@@ -215,21 +212,21 @@ control "V-6577" do
     services = command('systemctl list-unit-files --type service').stdout.scan(/^(.+).service/).flatten
 
     describe services do
-      it{ should be_in ALLOWED_SERVICES_LIST}
+      it{ should be_in ALLOWED_SERVICES_LIST }
     end
 
     describe services do
-      it{ should_not be_in DISALLOWED_SERVICES_LIST}
+      it{ should_not be_in DISALLOWED_SERVICES_LIST }
     end
 
     services.each do |service|
       service_path = service(service).params['ExecStart'].scan(/path=(.+)[\s][;][\s]argv/).join unless service(service).params['ExecStart'].nil?
       describe service_path do
-        it { should_not cmp '/'}
+        it { should_not cmp '/' }
       end
       webserver_roots.each do |root|
         describe service_path do
-          it { should_not match root}
+          it { should_not match root }
         end
       end
     end
@@ -241,7 +238,7 @@ control "V-6577" do
     end
   rescue Exception => msg
     describe "Exception: #{msg}" do
-      it { should be_nil}
+      it { should be_nil }
     end
   end
 

@@ -35,7 +35,7 @@ NGINX_OWNER = attribute(
 )
 
 only_if do
-  package('nginx').installed?
+  package('nginx').installed? or command('nginx').exist?
 end
 
 control "V-2247" do
@@ -97,7 +97,7 @@ control "V-2247" do
     end
   rescue Exception => msg
     describe "Exception: #{msg}" do
-      it { should be_nil}
+      it { should be_nil }
     end
   end
 end

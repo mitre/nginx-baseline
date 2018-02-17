@@ -23,7 +23,7 @@ uri: http://iase.disa.mil
 =end
 
 only_if do
-  package('nginx').installed?
+  package('nginx').installed? or command('nginx').exist?
 end
 
 control "V-13613" do
@@ -85,7 +85,7 @@ control "V-13613" do
     end
   rescue Exception => msg
     describe "Exception: #{msg}" do
-      it { should be_nil}
+      it { should be_nil }
     end
   end
 end
