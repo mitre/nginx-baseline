@@ -35,7 +35,7 @@ NGINX_OWNER = attribute(
 )
 
 only_if do
-  package('nginx').installed? or command('nginx').exist?
+  package('nginx').installed? || command('nginx').exist?
 end
 
 control "V-2247" do

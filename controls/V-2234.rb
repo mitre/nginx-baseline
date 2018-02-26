@@ -23,7 +23,7 @@ uri: http://iase.disa.mil
 =end
 
 only_if do
-  package('nginx').installed? or command('nginx').exist?
+  package('nginx').installed? || command('nginx').exist?
 end
 
 control "V-2234" do
@@ -67,7 +67,5 @@ control "V-2234" do
   relationship with any system resource that is also not accessible to the
   public. Web content is not to be shared via Microsoft shares or NFS mounts."
 
-  only_if {
-    false
-  }
+  only_if { false } # this will always skip
 end

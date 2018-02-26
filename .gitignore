@@ -1,8 +1,7 @@
 **/.librarian
 **/Puppetfile.lock
 **/.tmp
-Gemfile.lock
-Berksfile.lock
+*.lock
 nbproject
 .DS_Store
 .gitter

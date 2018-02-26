@@ -29,7 +29,7 @@ NGINX_CONF_FILE = attribute(
 )
 
 only_if do
-  package('nginx').installed? or command('nginx').exist?
+  package('nginx').installed? || command('nginx').exist?
 end
 
 control "V-60707" do
@@ -161,5 +161,4 @@ control "V-60707" do
       it { should be_nil }
     end
   end
-
 end

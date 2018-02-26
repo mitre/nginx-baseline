@@ -28,19 +28,19 @@ NGINX_CONF_FILE = attribute(
   default: "/etc/nginx/nginx.conf"
 )
 
-NGINX_BACKUP_REPOSITORY= attribute(
+NGINX_BACKUP_REPOSITORY = attribute(
   'nginx_backup_repository',
   description: 'Path for the nginx home directory',
-  default: "/usr/share/nginx/html"
+  default: '/usr/share/nginx/html'
 )
 
 only_if do
-  package('nginx').installed? or command('nginx').exist?
+  package('nginx').installed? || command('nginx').exist?
 end
 
-control "V-2230" do
+control 'V-2230' do
 
-  title "Backup interactive scripts on the production web server are prohibited."
+  title 'Backup interactive scripts on the production web server are prohibited.'
 
   desc  "Copies of backup files will not execute on the server, but they can
   be read by the anonymous user if special precautions are not taken. Such
@@ -66,8 +66,8 @@ control "V-2230" do
   Commands to help find: find /nginx -name '.?*' -not -name .ht* -or -name '*~'
   -or -name '*
 
-   find/usr/local/nginx/html/-name'.?*'-not-name.ht*-or-name'*~'-or-name'*.bak
-   *'-or-name'*.old*'
+   find /usr/local/nginx/html/ -name '.?*' -not-name.ht* -or-name '*~' -or-name '*.bak
+   *' -or-name '*.old*'
 
   If files with these extensions are found in either the document directory or
   the home directory of the web server, this is a finding.
@@ -83,7 +83,8 @@ control "V-2230" do
   web server."
 
   begin
-    dirs = ['/home',NGINX_BACKUP_REPOSITORY]
+    dirs = ['/home', NGINX_BACKUP_REPOSITORY]
+
     nginx_conf_handle = nginx_conf(NGINX_CONF_FILE)
 
     nginx_conf_handle.http.entries.each do |http|
@@ -101,30 +102,12 @@ control "V-2230" do
     dirs.flatten!.uniq!
 
     dirs.each do |dir|
-      describe command("find #{dir} -name *.bak").stdout.chomp.split do
-        it {should be_empty}
-      end
-      describe command("find #{dir} -name *.old").stdout.chomp.split do
-        it {should be_empty}
-      end
-      describe command("find #{dir} -name *.temp").stdout.chomp.split do
-        it {should be_empty}
-      end
-      describe command("find #{dir} -name *.tmp").stdout.chomp.split do
-        it {should be_empty}
-      end
-      describe command("find #{dir} -name *.backup").stdout.chomp.split do
-        it {should be_empty}
-      end
-      describe command("find #{dir} -name .?*").stdout.chomp.split do
-        it {should be_empty}
-      end
-      describe command("find #{dir} -name *~").stdout.chomp.split do
-        it {should be_empty}
+      next unless directory(dir).exist?
+      describe "List of backup NINGX and/or CGI scripts found in #{dir}" do
+        subject { command("find #{dir} -name '.?*' -not-name '.ht*' -or-name '*~' -or-name '*.bak' -or-name '*.old*'").stdout.chomp.split }
+        it { should be_empty }
       end
     end
-
-
   rescue Exception => msg
     describe "Exception: #{msg}" do
       it { should be_nil }

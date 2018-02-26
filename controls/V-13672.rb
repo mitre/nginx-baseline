@@ -40,6 +40,10 @@ CRL_UDPATE_FREQUENCY= attribute(
   default: 7
 )
 
+only_if do
+  package('nginx').installed? || command('nginx').exist?
+end
+
 control "V-13672" do
 
   title "The private web server must use an approved DoD certificate

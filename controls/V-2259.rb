@@ -52,9 +52,9 @@ SYS_ADMIN_GROUP = attribute(
   default: ['root']
 )
 
-only_if {
-  command('nginx').exist? or package('nginx').installed?
-}
+only_if do
+  package('nginx').installed? || command('nginx').exist?
+end
 
 control "V-2259" do
 
@@ -118,72 +118,72 @@ control "V-2259" do
       describe file('/usr/sbin/nginx') do
         its('owner') { should be_in authorized_sa_user_list }
         its('group') { should be_in authorized_sa_group_list }
-        its('mode') { should cmp <= 550 }
+        its('mode') { should cmp <= 0550 }
       end
       describe file('/usr/sbin/nginx') do
         it { should be_owned_by NGINX_OWNER }
         its('group') { should cmp NGINX_GROUP }
-        its('mode') { should cmp <= 550 }
+        its('mode') { should cmp <= 0550 }
       end
     end
     describe.one do
       describe file('/etc/nginx/') do
         its('owner') { should be_in authorized_sa_user_list }
         its('group') { should be_in authorized_sa_group_list }
-        its('mode') { should cmp <= 770 }
+        its('mode') { should cmp <= 0770 }
       end
       describe file('/etc/nginx/') do
         it { should be_owned_by NGINX_OWNER }
         its('group') { should cmp NGINX_GROUP }
-        its('mode') { should cmp <= 660 }
+        its('mode') { should cmp <= 0660 }
       end
     end
     describe.one do
       describe file('/etc/nginx/conf.d') do
         its('owner') { should be_in authorized_sa_user_list }
         its('group') { should be_in authorized_sa_group_list }
-        its('mode') { should cmp <= 770 }
+        its('mode') { should cmp <= 0770 }
       end
       describe file('/etc/nginx/conf.d') do
         it { should be_owned_by NGINX_OWNER }
         its('group') { should cmp NGINX_GROUP }
-        its('mode') { should cmp <= 660 }
+        its('mode') { should cmp <= 0660 }
       end
     end
     describe.one do
       describe file('/etc/nginx/modules') do
         its('owner') { should be_in authorized_sa_user_list }
         its('group') { should be_in authorized_sa_group_list }
-        its('mode') { should cmp <= 770 }
+        its('mode') { should cmp <= 0770 }
       end
       describe file('/etc/nginx/modules') do
         it { should be_owned_by NGINX_OWNER }
         its('group') { should cmp NGINX_GROUP }
-        its('mode') { should cmp <= 660 }
+        its('mode') { should cmp <= 0660 }
       end
     end
     describe.one do
       describe file('/usr/share/nginx/html') do
         its('owner') { should be_in authorized_sa_user_list }
         its('group') { should be_in authorized_sa_group_list }
-        its('mode') { should cmp <= 775 }
+        its('mode') { should cmp <= 0775 }
       end
       describe file('/usr/share/nginx/html') do
         it { should be_owned_by NGINX_OWNER }
         its('group') { should cmp NGINX_GROUP }
-        its('mode') { should cmp <= 664 }
+        its('mode') { should cmp <= 0664 }
       end
     end
     describe.one do
       describe file('/var/log/nginx') do
         its('owner') { should be_in authorized_sa_user_list }
         its('group') { should be_in authorized_sa_group_list }
-        its('mode') { should cmp <= 750 }
+        its('mode') { should cmp <= 0750 }
       end
       describe file('/var/log/nginx') do
         it { should be_owned_by NGINX_OWNER }
         its('group') { should cmp NGINX_GROUP }
-        its('mode') { should cmp <= 640 }
+        its('mode') { should cmp <= 0640 }
       end
     end
 
