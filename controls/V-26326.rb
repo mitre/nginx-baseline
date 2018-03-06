@@ -78,7 +78,7 @@ control "V-26326" do
 
   begin
 
-    describe nginx_conf_handle do
+    describe nginx_conf(NGINX_CONF_FILE) do
       its ('params') { should_not be_empty }
     end
 
