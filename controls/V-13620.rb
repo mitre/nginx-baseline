@@ -91,6 +91,10 @@ control "V-13620" do
   begin
     nginx_conf_handle = nginx_conf(NGINX_CONF_FILE)
 
+    describe nginx_conf_handle do
+      its ('params') { should_not be_empty }
+    end
+
     nginx_conf_handle.http.entries.each do |http|
       describe http.params['ssl_client_certificate'] do
         it { should_not be_nil }

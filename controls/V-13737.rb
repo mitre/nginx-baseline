@@ -66,6 +66,10 @@ control "V-13737" do
   begin
     nginx_conf_handle = nginx_conf(NGINX_CONF_FILE)
 
+    describe nginx_conf_handle do
+      its ('params') { should_not be_empty }
+    end
+
     nginx_conf_handle.http.entries.each do |http|
       describe http.params['large_client_header_buffers'] do
         it { should cmp [['2','1k']] }

@@ -74,6 +74,11 @@ control "V-26396" do
 "
 
   begin
+    
+    describe nginx_conf_handle do
+      its ('params') { should_not be_empty }
+    end
+
     nginx_conf(NGINX_CONF_FILE).locations.entries.each do |location|
       unless location.params["_"].eql?(["/"])
         describe location.params['if'] do

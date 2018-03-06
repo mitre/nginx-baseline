@@ -77,6 +77,11 @@ control "V-26326" do
   listen on a specific IP address and port. "
 
   begin
+
+    describe nginx_conf_handle do
+      its ('params') { should_not be_empty }
+    end
+
     nginx_conf(NGINX_CONF_FILE).servers.entries.each do |server|
       server.params['listen'].each do |listen|
         describe listen.join do

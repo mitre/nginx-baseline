@@ -91,7 +91,7 @@ control "V-2247" do
     end
 
     if users.shells(/bash/).usernames.empty?
-      describe do
+      describe "Skip Message" do
         skip "Skipped: no users found with shell acccess."
       end
     end

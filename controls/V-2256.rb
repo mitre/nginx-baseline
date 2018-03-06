@@ -111,14 +111,19 @@ control "V-2256" do
     
     access_control_files = [ '.htaccess',
                             '.htpasswd']
+
     nginx_conf_handle = nginx_conf(NGINX_CONF_FILE)
     nginx_conf_handle.params
+    
+    describe nginx_conf_handle do
+      its ('params') { should_not be_empty }
+    end
 
     access_control_files.each do |file|
       file_path = command("find / -name #{file}").stdout.chomp
 
       if file_path.empty?
-        describe do
+        describe "Skip Message" do
           skip "Skipped: Access control file #{file} not found"
         end
       end
@@ -141,7 +146,7 @@ control "V-2256" do
     end
 
     if nginx_conf_handle.contents.keys.empty?
-      describe do
+      describe "Skip Message" do
         skip "Skipped: no conf files included."
       end
     end
@@ -171,7 +176,7 @@ control "V-2256" do
     end
 
     if webserver_roots.empty?
-      describe do
+      describe "Skip Message" do
         skip "Skipped: no web root directories found."
       end
     end

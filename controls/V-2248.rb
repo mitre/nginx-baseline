@@ -109,6 +109,10 @@ control "V-2248" do
     nginx_conf_handle = nginx_conf(NGINX_CONF_FILE)
     nginx_conf_handle.params
 
+    describe nginx_conf_handle do
+      its ('params') { should_not be_empty }
+    end
+
     nginx_conf_handle.contents.keys.each do |file|
       describe file(file) do
         its('owner') { should be_in authorized_sa_user_list }
@@ -118,7 +122,7 @@ control "V-2248" do
     end
 
     if nginx_conf_handle.contents.keys.empty?
-      describe do
+      describe "Skip Message" do
         skip "Skipped: no conf files included."
       end
     end

@@ -71,6 +71,10 @@ If the entry is not found, this is a finding."
   begin
     nginx_conf_handle = nginx_conf(NGINX_CONF_FILE)
 
+    describe nginx_conf_handle do
+      its ('params') { should_not be_empty }
+    end
+
     nginx_conf_handle.http.entries.each do |http|
       describe http.params['ssl_protocols'] do
         it { should cmp [["TLSv1", "TLSv1.1", "TLSv1.2"]] }

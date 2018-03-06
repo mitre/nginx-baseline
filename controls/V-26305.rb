@@ -95,6 +95,10 @@ control "V-26305" do
     webserver_roots = []
     nginx_conf_handle = nginx_conf(NGINX_CONF_FILE)
 
+    describe nginx_conf_handle do
+      its ('params') { should_not be_empty }
+    end
+
     nginx_conf_handle.http.entries.each do |http|
       webserver_roots.push(http.params['root']) unless http.params['root'].nil?
     end

@@ -119,6 +119,10 @@ control "V-60707" do
     disabled_ssl_ciphers = ['aNULL', 'eNULL', 'EXPORT', 'DES', 'MD5', 'PSK', 'RC4']
     nginx_conf_handle = nginx_conf(NGINX_CONF_FILE)
 
+    describe nginx_conf_handle do
+      its ('params') { should_not be_empty }
+    end
+
     nginx_conf_handle.http.entries.each do |http|
       describe http.params['ssl_prefer_server_ciphers'] do
         it { should cmp [['on']] }
