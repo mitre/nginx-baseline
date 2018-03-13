@@ -166,7 +166,7 @@ control "V-2259" do
       describe file('/usr/share/nginx/html') do
         its('owner') { should be_in authorized_sa_user_list }
         its('group') { should be_in authorized_sa_group_list }
-        its('mode') { should cmp <= 0775 }
+        its('mode') { should cmp <= 1775 }
       end
       describe file('/usr/share/nginx/html') do
         it { should be_owned_by NGINX_OWNER }
