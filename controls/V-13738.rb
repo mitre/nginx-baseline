@@ -64,6 +64,15 @@ control "V-13738" do
   to 1k or less."
 
   begin
+
+    def to_bytes(size)
+      return size if size.nil?
+      size_bytes = size.to_i
+      size_bytes = size_bytes*1024      if size.match('K') || size.match('k') 
+      size_bytes = size_bytes*1024*1024 if size.match('M') || size.match('m') 
+      return size_bytes
+    end
+
     nginx_conf_handle = nginx_conf(NGINX_CONF_FILE)
 
     describe nginx_conf_handle do
@@ -75,14 +84,14 @@ control "V-13738" do
         it { should_not be_nil }
 
       end
-      describe http.params['client_header_buffer_size'].join.to_i do
-        it { should cmp <= '1k'.to_i }
+      describe to_bytes(http.params['client_header_buffer_size'].join) do
+        it { should cmp <= 1024 }
       end unless http.params['client_header_buffer_size'].nil?
     end
 
     nginx_conf_handle.servers.entries.each do |server|
-      describe server.params['client_header_buffer_size'].join.to_i do
-        it { should cmp <= '1k'.to_i }
+      describe to_bytes(server.params['client_header_buffer_size'].join) do
+        it { should cmp <= 1024 }
       end unless server.params['client_header_buffer_size'].nil?
     end
 

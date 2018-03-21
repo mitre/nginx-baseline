@@ -69,6 +69,16 @@ control "V-13736" do
   and client_max_body_size to 100k or less."
 
   begin
+
+    def to_bytes(size)
+      return size if size.nil?
+      size_bytes = size.to_i
+      size_bytes = size_bytes*1024      if size.match('K') || size.match('k') 
+      size_bytes = size_bytes*1024*1024 if size.match('M') || size.match('m') 
+      return size_bytes
+    end
+
+
     nginx_conf_handle = nginx_conf(NGINX_CONF_FILE)
 
     describe nginx_conf_handle do
@@ -78,40 +88,39 @@ control "V-13736" do
     nginx_conf_handle.http.entries.each do |http|
       describe http.params['client_body_buffer_size'] do
         it { should_not be_nil }
-
       end
-      describe http.params['client_body_buffer_size'].join.to_i do
-        it { should cmp <= '100k'.to_i }
+      describe to_bytes(http.params['client_body_buffer_size'].join) do
+        it { should cmp <= 100*1024 }
       end unless http.params['client_body_buffer_size'].nil?
 
-      describe http.params['client_max_body_size'] do
+      describe to_bytes(http.params['client_max_body_size'].join) do
         it { should_not be_nil }
-
       end
-      describe http.params['client_max_body_size'].join.to_i do
-        it { should cmp <= '100k'.to_i }
+      describe to_bytes(http.params['client_max_body_size'].join) do
+        it { should cmp <= 100*1024 }
       end unless http.params['client_max_body_size'].nil?
     end
 
     nginx_conf_handle.servers.entries.each do |server|
-      describe server.params['client_body_buffer_size'].join.to_i do
-        it { should cmp <= '100k'.to_i }
+      describe to_bytes(server.params['client_body_buffer_size'].join) do
+        it { should cmp <= 100*1024 }
       end unless server.params['client_body_buffer_size'].nil?
 
-      describe server.params['client_max_body_size'].join.to_i do
-        it { should cmp <= '100k'.to_i }
+      describe to_bytes(server.params['client_max_body_size'].join) do
+        it { should cmp <= 100*1024 }
       end unless server.params['client_max_body_size'].nil?
     end
 
     nginx_conf_handle.locations.entries.each do |location|
-      describe location.params['client_body_buffer_size'].join.to_i do
-        it { should cmp <= '100k'.to_i }
+      describe to_bytes(location.params['client_body_buffer_size'].join) do
+        it { should cmp <= 100*1024 }
       end unless location.params['client_body_buffer_size'].nil?
 
-      describe location.params['client_max_body_size'].join.to_i do
-        it { should cmp <= '100k'.to_i }
+      describe to_bytes(location.params['client_max_body_size'].join) do
+        it { should cmp <= 100*1024 }
       end unless location.params['client_max_body_size'].nil?
     end
+
 
   rescue Exception => msg
     describe "Exception: #{msg}" do
