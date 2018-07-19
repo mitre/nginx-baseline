@@ -20,19 +20,6 @@ dmz_subnet: '62.0.0.0/24'
 #description: Minimum Web vendor-supported version.
 nginx_min_ver: '1.12.0'
 
-#description: List of authorized running processes,
-authorized_process_list:
-  - nginx
-  - systemd
-  - systemd-journal
-  - systemd-udevd
-  - systemd-logind
-  - dbus-daemon
-  - agetty
-  - bash
-  - ps
-  - openssl
-
 #description: Nginx owner
 nginx_owner: 'nginx'
 
@@ -40,280 +27,70 @@ nginx_owner: 'nginx'
 nginx_group: 'nginx'
 
 #description: The system adminstrator,
-sys_admin: 'root'
+sys_admin: ['root','centos']
 
 #description: The system adminstrator group,
 sys_admin_group: 'root'
 
 #description: List of non admin user accounts
-authorized_user_list: ['user']
+authorized_user_list:
+    ['user'
+    ]
 
 #description: Monitoring software for CGI or equivalent programs,
 monitoring_software: ['audit', 'auditd']
 
-#description: List of allowed services
-allowed_services_list:
-  - brandbot
-  - dbus
-  - dracut-shutdown
-  - emergency
-  - getty@tty1
-  - kmod-static-nodes
-  - network
-  - nginx
-  - rc-local
-  - rescue
-  - rhel-autorelabel-mark
-  - rhel-autorelabel
-  - rhel-configure
-  - rhel-dmesg
-  - rhel-import-state
-  - rhel-loadmodules
-  - rhel-readonly
-  - serial-getty@ttyS0
-  - systemd-ask-password-console
-  - systemd-ask-password-wall
-  - systemd-binfmt
-  - systemd-firstboot
-  - systemd-fsck-root
-  - systemd-hwdb-update
-  - systemd-initctl
-  - systemd-journal-catalog-update
-  - systemd-journal-flush
-  - systemd-journald
-  - systemd-logind
-  - systemd-modules-load
-  - systemd-random-seed
-  - systemd-readahead-collect
-  - systemd-readahead-done
-  - systemd-readahead-replay
-  - systemd-reboot
-  - systemd-shutdownd
-  - systemd-sysctl
-  - systemd-tmpfiles-clean
-  - systemd-tmpfiles-setup-dev
-  - systemd-tmpfiles-setup
-  - systemd-udev-trigger
-  - systemd-udevd
-  - systemd-update-done
-  - systemd-update-utmp-runlevel
-  - systemd-update-utmp
-  - systemd-user-sessions
-  - systemd-vconsole-setup
-  - auditd
-
-#description: List of disallowed services
-disallowed_services_list:
-  - mysql
-  - postgres
-  - named
-
-# description: 'List of allowed packages',
-allowed_packages_list:
-  - centos-release
-  - filesystem
-  - basesystem
-  - nss-softokn-freebl
-  - glibc
-  - libstdc++
-  - bash
-  - pcre
-  - zlib
-  - xz-libs
-  - libcom_err
-  - popt
-  - sed
-  - elfutils-libelf
-  - libffi
-  - libattr
-  - libacl
-  - libuuid
-  - readline
-  - gawk
-  - libcap-ng
-  - sqlite
-  - findutils
-  - expat
-  - nss-softokn
-  - p11-kit
-  - file-libs
-  - hostname
-  - tar
-  - pinentry
-  - libdb-utils
-  - libss
-  - elfutils-default-yama-scope
-  - ncurses
-  - gmp
-  - libsemanage
-  - libtasn1
-  - ca-certificates
-  - openssl-libs
-  - libblkid
-  - libmount
-  - shared-mime-info
-  - cracklib
-  - libpwquality
-  - pkgconfig
-  - dbus-glib
-  - binutils
-  - curl
-  - rpm
-  - libuser
-  - hardlink
-  - qrencode-libs
-  - device-mapper
-  - cryptsetup-libs
-  - dbus
-  - gdbm
-  - python
-  - dbus-python
-  - pyliblzma
-  - yum-metadata-parser
-  - python-urlgrabber
-  - pyxattr
-  - python-kitchen
-  - gnupg2
-  - pygpgme
-  - rpm-python
-  - yum
-  - yum-plugin-ovl
-  - passwd
-  - vim-minimal
-  - gpg-pubkey
-  - libmnl
-  - iptables
-  - sysvinit-tools
-  - systemd
-  - initscripts
-  - which
-  - nss-sysinit
-  - kmod
-  - kmod-libs
-  - openssl
-  - audit
-  - nginx
-  - libgcc
-  - setup
-  - bind-license
-  - ncurses-base
-  - glibc-common
-  - nspr
-  - ncurses-libs
-  - libsepol
-  - libselinux
-  - info
-  - bzip2-libs
-  - libdb
-  - chkconfig
-  - nss-util
-  - libxml2
-  - libgpg-error
-  - libcap
-  - grep
-  - libgcrypt
-  - lua
-  - cpio
-  - audit-libs
-  - libidn
-  - diffutils
-  - dbus-libs
-  - libassuan
-  - xz
-  - keyutils-libs
-  - acl
-  - cyrus-sasl-lib
-  - elfutils-libs
-  - ustr
-  - libverto
-  - p11-kit-trust
-  - coreutils
-  - krb5-libs
-  - shadow-utils
-  - glib2
-  - gzip
-  - cracklib-dicts
-  - pam
-  - procps-ng
-  - gobject-introspection
-  - libutempter
-  - libssh2
-  - nss-pem
-  - libcurl
-  - rpm-libs
-  - openldap
-  - util-linux
-  - kpartx
-  - device-mapper-libs
-  - dracut
-  - iputils
-  - python-libs
-  - python-iniparse
-  - python-pycurl
-  - python-gobject-base
-  - libxml2-python
-  - python-chardet
-  - pth
-  - gpgme
-  - rpm-build-libs
-  - yum-plugin-fastestmirror
-  - yum-utils
-  - qemu-guest-agent
-  - rootfiles
-  - libnfnetlink
-  - libnetfilter_conntrack
-  - iproute
-  - systemd-libs
-  - systemd-sysv
-  - lsof
-  - nss
-  - nss-tools
-  - tzdata
-  - make
-  - tcp_wrappers-libs
-  - gpg-pubkey
-
-
-# description: 'List of disallowed packages'
-disallowed_packages_list: [ ]
-
+# description: 'List of disallowed packages',
+disallowed_packages_list: ['postfix']
 
 # description: List of disallowed compilers
-disallowed_compiler_list: ['gcc']
+disallowed_compiler_list:
+    ['gcc'
+    ]
 
 #description: DoD-approved PKIs (e.g., DoD PKI, DoD ECA, and DoD-approved external partners.
-dod_approved_pkis: ['DoD', 'ECA']
+dod_approved_pkis:
+    ['DoD',
+     'ECA'
+    ]
 
 #description: File list of  documentation, sample code, example applications, and tutorials.
-nginx_disallowed_file_list: ['/usr/share/man/man8/nginx.8.gz']
+nginx_disallowed_file_list:
+    [ '/usr/share/man/man8/nginx.8.gz'
+    ]
 
 #description: File list of allowed documentation, sample code, example applications, and tutorials.
-nginx_allowed_file_list: []
+nginx_allowed_file_list:
+    [
+    ]
 
 #description: List of  authorized nginx modules.
 nginx_authorized_modules:
-  - http_addition
-  - http_auth_request
-  - http_dav
-  - http_flv
-  - http_gunzip
-  - http_gzip_static
-  - http_mp4
-  - http_random_index
-  - http_realip
-  - http_secure_link
-  - http_slice
-  - http_ssl
-  - http_stub_status
-  - http_sub
-  - http_v2
-  - mail_ssl
-  - stream_realip
-  - stream_ssl
-  - stream_ssl_preread
+    ['http_addition',
+     'http_auth_request',
+     'http_dav',
+     'http_flv',
+     'http_gunzip',
+     'http_gzip_static',
+     'http_mp4',
+     'http_random_index',
+     'http_realip',
+     'http_secure_link',
+     'http_slice',
+     'http_ssl',
+     'http_stub_status',
+     'http_sub',
+     'http_v2',
+     'mail_ssl',
+     'stream_realip',
+     'stream_ssl',
+     'stream_ssl_preread'
+     ]
 
 #description: List of  unauthorized nginx modules.
-nginx_unauthorized_modules: []
+nginx_unauthorized_modules:
+    [
+    ]
 
 #description: Path for the nginx binary
 nginx_path: '/usr/sbin/nginx'
