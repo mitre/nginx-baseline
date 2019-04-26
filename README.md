@@ -12,14 +12,14 @@ This Compliance Profile ensures, that all hardening projects keep the same quali
 This Compliance Profile requires [InSpec](https://github.com/chef/inspec) for execution:
 
 ```
-$ git clone https://github.com/dev-sec/nginx-baseline
+$ git clone https://github.com/mitre/nginx-baseline
 $ inspec exec nginx-baseline
 ```
 
 You can also execute the profile directly from Github:
 
 ```
-$ inspec exec https://github.com/dev-sec/nginx-baseline
+$ inspec exec https://github.com/mitre/nginx-baseline
 ```
 
 ## License and Author
