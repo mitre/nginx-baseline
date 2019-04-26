@@ -1,4 +1,4 @@
-DevSec Nginx Baseline
+Nginx Baseline
 =====================
 
 This Compliance Profile ensures, that all hardening projects keep the same quality.
