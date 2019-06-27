@@ -22,13 +22,13 @@ uri: http://iase.disa.mil
 -----------------
 =end
 
-NGINX_CONF_FILE = attribute(
+nginx_conf_file = attribute(
   'nginx_conf_file',
   description: 'Path for the nginx configuration file',
   default: "/etc/nginx/nginx.conf"
 )
 
-NGINX_BACKUP_REPOSITORY = attribute(
+nginx_backup_repository = attribute(
   'nginx_backup_repository',
   description: 'Path for the nginx home directory',
   default: '/usr/share/nginx/html'
@@ -83,9 +83,9 @@ control 'V-2230' do
   web server."
 
   begin
-    dirs = ['/home', NGINX_BACKUP_REPOSITORY]
+    dirs = ['/home', nginx_backup_repository]
 
-    nginx_conf_handle = nginx_conf(NGINX_CONF_FILE)
+    nginx_conf_handle = nginx_conf(nginx_conf_file)
 
     describe nginx_conf_handle do
       its ('params') { should_not be_empty }

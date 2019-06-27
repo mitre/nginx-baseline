@@ -22,19 +22,19 @@ uri: http://iase.disa.mil
 -----------------
 =end
 
-NGINX_CONF_FILE = attribute(
+nginx_conf_file = attribute(
   'nginx_conf_file',
   description: 'Path for the nginx configuration file',
   default: "/etc/nginx/nginx.conf"
 )
 
-OCSP_SERVER = attribute(
+ocsp_server = attribute(
   'ocsp_server',
   description: 'domain and port to the OCSP Server ',
   default: 'login.live.com:443'
 )
 
-CRL_UDPATE_FREQUENCY= attribute(
+crl_udpate_frequency= attribute(
   'crl_udpate_frequency',
   description: 'Frequency at which CRL is updated in days',
   default: 7
@@ -93,7 +93,7 @@ control "V-13672" do
     require 'time'
 
     #@todo complete ocsp verification test
-    # oscp_status = command("openssl s_client -connect #{OCSP_SERVER} -tls1  -tlsextdebug  -status 2>&1 < /dev/null").stdout
+    # oscp_status = command("openssl s_client -connect #{ocsp_server} -tls1  -tlsextdebug  -status 2>&1 < /dev/null").stdout
     #
     # describe oscp_status do
     #   it { should match %r(OCSP Response Status: successful)}
@@ -103,7 +103,7 @@ control "V-13672" do
       ((Time.new - Time.at(file(cert).mtime.to_f)) / 86400)
     end
 
-    nginx_conf_handle = nginx_conf(NGINX_CONF_FILE)
+    nginx_conf_handle = nginx_conf(nginx_conf_file)
 
     describe nginx_conf_handle do
       its ('params') { should_not be_empty }
@@ -118,7 +118,7 @@ control "V-13672" do
           it { should be_file }
         end
         describe days_since_crl_update(cert.join) do
-          it { should cmp < CRL_UDPATE_FREQUENCY }
+          it { should cmp < crl_udpate_frequency }
         end
       end unless http.params['ssl_crl'].nil?
     end
@@ -129,7 +129,7 @@ control "V-13672" do
           it { should be_file }
         end
         describe days_since_crl_update(cert.join) do
-          it { should cmp < CRL_UDPATE_FREQUENCY }
+          it { should cmp < crl_udpate_frequency }
         end
       end unless server.params['ssl_crl'].nil?
     end

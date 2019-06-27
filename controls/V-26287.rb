@@ -22,7 +22,7 @@ uri: http://iase.disa.mil
 -----------------
 =end
 
-NGINX_PATH= attribute(
+nginx_path= attribute(
   'nginx_path',
   description: 'Path for the nginx configuration file',
   default: "/usr/sbin/nginx"

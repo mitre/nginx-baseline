@@ -22,7 +22,7 @@ uri: http://iase.disa.mil
 -----------------
 =end
 
-MONITORINGSOFTWARE = attribute(
+monitoringsoftware = attribute(
   'monitoring_software',
   description: "Monitoring software for CGI or equivalent programs",
   default: ['audit', 'auditd']
@@ -68,7 +68,7 @@ control "V-2271" do
 
   begin
     describe.one do
-      MONITORINGSOFTWARE.each do |software|
+      monitoringsoftware.each do |software|
         describe package(software) do
           it{ should be_installed }
         end

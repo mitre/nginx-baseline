@@ -23,38 +23,38 @@ uri: http://iase.disa.mil
 =end
 
 
-NGINX_DISALLOWED_FILE_LIST = attribute(
+nginx_disallowed_file_list = attribute(
   'nginx_disallowed_file_list',
   description: 'File list of  documentation, sample code, example applications, and tutorials.',
   default: ["/usr/share/man/man8/nginx.8.gz"]
 )
 
-NGINX_EXCEPTION_FILES = attribute(
+nginx_exception_files = attribute(
   'nginx_allowed_file_list',
   description: 'File list of allowed documentation, sample code, example applications, and tutorials.',
   default: [
            ]
 )
 
-NGINX_OWNER = attribute(
+nginx_owner = attribute(
   'nginx_owner',
   description: "The Nginx owner",
   default: 'nginx'
 )
 
-SYS_ADMIN = attribute(
+sys_admin = attribute(
   'sys_admin',
   description: "The system adminstrator",
   default: ['root']
 )
 
-NGINX_GROUP = attribute(
+nginx_group = attribute(
   'nginx_group',
   description: "The Nginx group",
   default: 'nginx'
 )
 
-SYS_ADMIN_GROUP = attribute(
+sys_admin_group = attribute(
   'sys_admin_group',
   description: "The system adminstrator group",
   default: ['root']
@@ -106,16 +106,16 @@ control "V-13621" do
 
   begin
 
-    authorized_sa_user_list = SYS_ADMIN.clone << NGINX_OWNER
-    authorized_sa_group_list = SYS_ADMIN_GROUP.clone << NGINX_GROUP
+    authorized_sa_user_list = sys_admin.clone << nginx_owner
+    authorized_sa_group_list = sys_admin_group.clone << nginx_group
 
-    NGINX_DISALLOWED_FILE_LIST.each do |file|
+    nginx_disallowed_file_list.each do |file|
       describe file(file) do
         it { should_not exist }
       end
     end
 
-    NGINX_EXCEPTION_FILES.each do |file|
+    nginx_exception_files.each do |file|
       describe file(file) do
         its('owner') { should be_in authorized_sa_user_list }
         its('group') { should be_in authorized_sa_group_list }

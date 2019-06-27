@@ -23,19 +23,19 @@ uri: http://iase.disa.mil
 =end
 
 
-SYS_ADMIN = attribute(
+sys_admin = attribute(
   'sys_admin',
   description: "The system adminstrator",
   default: ['root']
 )
 
-NGINX_OWNER = attribute(
+nginx_owner = attribute(
   'nginx_owner',
   description: "The Nginx owner",
   default: 'nginx'
 )
 
-NGINX_CONF_FILE = attribute(
+nginx_conf_file = attribute(
   'nginx_conf_file',
   description: 'define path for the nginx configuration file',
   default: "/etc/nginx/nginx.conf"
@@ -85,9 +85,9 @@ control "V-2257" do
   rights to the web server in the web site SOP or in an equivalent document."
 
   begin
-    authorized_sa_user_list = SYS_ADMIN.clone << NGINX_OWNER
+    authorized_sa_user_list = sys_admin.clone << nginx_owner
 
-    describe nginx_conf(NGINX_CONF_FILE).params['user'].flatten do
+    describe nginx_conf(nginx_conf_file).params['user'].flatten do
       it{ should be_in authorized_sa_user_list}
     end
 

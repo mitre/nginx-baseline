@@ -22,13 +22,13 @@ uri: http://iase.disa.mil
 -----------------
 =end
 
-SYS_ADMIN = attribute(
+sys_admin = attribute(
   'sys_admin',
   description: "The system adminstrator",
   default: ['root']
 )
 
-NGINX_OWNER = attribute(
+nginx_owner = attribute(
   'nginx_owner',
   description: "The Nginx owner",
   default: 'nginx'
@@ -84,7 +84,7 @@ control "V-2247" do
 
   begin
   
-    authorized_sa_user_list = SYS_ADMIN.clone << NGINX_OWNER
+    authorized_sa_user_list = sys_admin.clone << nginx_owner
 
     describe users.shells(/bash/).usernames do
       it { should be_in authorized_sa_user_list}

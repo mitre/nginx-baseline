@@ -22,13 +22,13 @@ uri: http://iase.disa.mil
 -----------------
 =end
 
-NGINX_PATH= attribute(
+nginx_path= attribute(
   'nginx_path',
   description: 'Path for the nginx configuration file',
   default: "/usr/sbin/nginx"
 )
 
-NGINX_AUTHORIZED_MODULES= attribute(
+nginx_authorized_modules= attribute(
   'nginx_authorized_modules',
   description: 'List of  authorized nginx modules.',
   default: [
@@ -53,7 +53,7 @@ NGINX_AUTHORIZED_MODULES= attribute(
             "stream_ssl_preread"
            ]
 )
-NGINX_UNAUTHORIZED_MODULES= attribute(
+nginx_unauthorized_modules= attribute(
   'nginx_unauthorized_modules',
   description: 'List of  unauthorized nginx modules.',
   default: [
@@ -103,10 +103,10 @@ control "V-26285" do
 
   begin
     describe nginx do
-      its('modules') { should be_in NGINX_AUTHORIZED_MODULES }
+      its('modules') { should be_in nginx_authorized_modules }
     end
     describe nginx do
-      its('modules') { should_not be_in NGINX_UNAUTHORIZED_MODULES }
+      its('modules') { should_not be_in nginx_unauthorized_modules }
     end
   rescue Exception => msg
     describe "Exception: #{msg}" do

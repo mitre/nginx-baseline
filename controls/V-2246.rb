@@ -23,13 +23,13 @@ uri: http://iase.disa.mil
 =end
 
 
-NGINX_MIN_VER = attribute(
+nginx_min_ver = attribute(
   'nginx_min_ver',
   description: 'Minimum Web vendor-supported version.',
   default: '1.12.0'
 )
 
-NGINX_PATH= attribute(
+nginx_path= attribute(
   'nginx_path',
   description: 'Path for the nginx configuration file',
   default: "/usr/sbin"
@@ -76,7 +76,7 @@ control "V-2246" do
 
   begin
     describe nginx do
-      its('version'){ should cmp >= NGINX_MIN_VER }
+      its('version'){ should cmp >= nginx_min_ver }
     end
   rescue Exception => msg
     describe "Exception: #{msg}" do

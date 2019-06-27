@@ -22,7 +22,7 @@ uri: http://iase.disa.mil
 -----------------
 =end
 
-DISALLOWED_COMPILER_LIST = attribute(
+disallowed_compiler_list = attribute(
   'disallowed_compiler_list',
   description: "List of disallowed compilers",
   default: []
@@ -79,7 +79,7 @@ control "V-2236" do
       end
     end
 
-    DISALLOWED_COMPILER_LIST.each do |compiler|
+    disallowed_compiler_list.each do |compiler|
       describe package(compiler) do
         it { should_not be_installed }
       end
