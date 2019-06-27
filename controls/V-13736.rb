@@ -23,7 +23,7 @@ uri: http://iase.disa.mil
 =end
 
 
-NGINX_CONF_FILE = attribute(
+nginx_conf_file = attribute(
   'nginx_conf_file',
   description: 'Path for the nginx configuration file',
   default: "/etc/nginx/nginx.conf"
@@ -79,7 +79,7 @@ control "V-13736" do
     end
 
 
-    nginx_conf_handle = nginx_conf(NGINX_CONF_FILE)
+    nginx_conf_handle = nginx_conf(nginx_conf_file)
 
     describe nginx_conf_handle do
       its ('params') { should_not be_empty }

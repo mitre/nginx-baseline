@@ -22,7 +22,7 @@ uri: http://iase.disa.mil
 -----------------
 =end
 
-NGINX_CONF_FILE = attribute(
+nginx_conf_file = attribute(
   'nginx_conf_file',
   description: 'Path for the nginx configuration file',
   default: "/etc/nginx/nginx.conf"
@@ -75,11 +75,11 @@ control "V-26396" do
 
   begin
     
-    describe nginx_conf(NGINX_CONF_FILE) do
+    describe nginx_conf(nginx_conf_file) do
       its ('params') { should_not be_empty }
     end
 
-    nginx_conf(NGINX_CONF_FILE).locations.entries.each do |location|
+    nginx_conf(nginx_conf_file).locations.entries.each do |location|
       unless location.params["_"].eql?(["/"])
         describe location.params['if'] do
           it { should_not be_nil }

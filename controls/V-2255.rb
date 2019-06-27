@@ -22,25 +22,25 @@ uri: http://iase.disa.mil
 -----------------
 =end
 
-NGINX_OWNER = attribute(
+nginx_owner = attribute(
   'nginx_owner',
   description: "The Nginx owner",
   default: 'nginx'
 )
 
-SYS_ADMIN = attribute(
+sys_admin = attribute(
   'sys_admin',
   description: "The system adminstrator",
   default: ['root']
 )
 
-NGINX_GROUP = attribute(
+nginx_group = attribute(
   'nginx_group',
   description: "The Nginx group",
   default: 'nginx'
 )
 
-SYS_ADMIN_GROUP = attribute(
+sys_admin_group = attribute(
   'sys_admin_group',
   description: "The system adminstrator group",
   default: ['root']
@@ -88,8 +88,8 @@ control "V-2255" do
 
   begin
 
-    authorized_sa_user_list = SYS_ADMIN.clone << NGINX_OWNER
-    authorized_sa_group_list = SYS_ADMIN_GROUP.clone << NGINX_GROUP
+    authorized_sa_user_list = sys_admin.clone << nginx_owner
+    authorized_sa_group_list = sys_admin_group.clone << nginx_group
 
     htpasswd = command('find / -name .htpasswd').stdout.chomp
     htpasswd.split.each do |htpwd|

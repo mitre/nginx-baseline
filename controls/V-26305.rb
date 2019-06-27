@@ -22,31 +22,31 @@ uri: http://iase.disa.mil
 -----------------
 =end
 
-NGINX_CONF_FILE = attribute(
+nginx_conf_file = attribute(
   'nginx_conf_file',
   description: 'Path for the nginx configuration file',
   default: "/etc/nginx/nginx.conf"
 )
 
-NGINX_OWNER = attribute(
+nginx_owner = attribute(
   'nginx_owner',
   description: "The Nginx owner",
   default: 'nginx'
 )
 
-SYS_ADMIN = attribute(
+sys_admin = attribute(
   'sys_admin',
   description: "The system adminstrator",
   default: ['root']
 )
 
-NGINX_GROUP = attribute(
+nginx_group = attribute(
   'nginx_group',
   description: "The Nginx group",
   default: 'nginx'
 )
 
-SYS_ADMIN_GROUP = attribute(
+sys_admin_group = attribute(
   'sys_admin_group',
   description: "The system adminstrator group",
   default: ['root']
@@ -89,11 +89,11 @@ control "V-26305" do
 
   begin
 
-    authorized_sa_user_list = SYS_ADMIN.clone << NGINX_OWNER
-    authorized_sa_group_list = SYS_ADMIN_GROUP.clone << NGINX_GROUP
+    authorized_sa_user_list = sys_admin.clone << nginx_owner
+    authorized_sa_group_list = sys_admin_group.clone << nginx_group
 
     webserver_roots = []
-    nginx_conf_handle = nginx_conf(NGINX_CONF_FILE)
+    nginx_conf_handle = nginx_conf(nginx_conf_file)
 
     describe nginx_conf_handle do
       its ('params') { should_not be_empty }

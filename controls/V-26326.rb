@@ -22,7 +22,7 @@ uri: http://iase.disa.mil
 -----------------
 =end
 
-NGINX_CONF_FILE = attribute(
+nginx_conf_file = attribute(
   'nginx_conf_file',
   description: 'Path for the nginx configuration file',
   default: "/etc/nginx/nginx.conf"
@@ -78,11 +78,11 @@ control "V-26326" do
 
   begin
 
-    describe nginx_conf(NGINX_CONF_FILE) do
+    describe nginx_conf(nginx_conf_file) do
       its ('params') { should_not be_empty }
     end
 
-    nginx_conf(NGINX_CONF_FILE).servers.entries.each do |server|
+    nginx_conf(nginx_conf_file).servers.entries.each do |server|
       server.params['listen'].each do |listen|
         describe listen.join do
           it { should match %r([0-9]+(?:\.[0-9]+){3}|[a-zA-Z]:[0-9]+) }

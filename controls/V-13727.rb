@@ -23,7 +23,7 @@ uri: http://iase.disa.mil
 =end
 
 
-NGINX_CONF_FILE = attribute(
+nginx_conf_file = attribute(
   'nginx_conf_file',
   description: 'Path for the nginx configuration file',
   default: "/etc/nginx/nginx.conf"
@@ -73,7 +73,7 @@ control "V-13727" do
   worker_processes auto;"
 
   begin
-    describe nginx_conf(NGINX_CONF_FILE).params['worker_processes'] do
+    describe nginx_conf(nginx_conf_file).params['worker_processes'] do
       it { should cmp [['auto']] }
     end
   rescue Exception => msg

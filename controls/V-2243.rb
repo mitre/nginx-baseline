@@ -23,13 +23,13 @@ uri: http://iase.disa.mil
 =end
 
 
-DMZ_SUBNET= attribute(
+dmz_subnet= attribute(
   'dmz_subnet',
   description: 'Subnet of the DMZ',
   default: '62.0.0.0/24'
 )
 
-NGINX_CONF_FILE = attribute(
+nginx_conf_file = attribute(
   'nginx_conf_file',
   description: 'Path for the nginx configuration file',
   default: "/etc/nginx/nginx.conf"
@@ -75,7 +75,7 @@ control "V-2243" do
   # collect and test each listen IPs from nginx_conf
 
   begin
-    nginx_conf_handle = nginx_conf(NGINX_CONF_FILE)
+    nginx_conf_handle = nginx_conf(nginx_conf_file)
 
     describe nginx_conf_handle do
       its ('params') { should_not be_empty }
@@ -89,7 +89,7 @@ control "V-2243" do
         server_ip = listen.join.split(':').first
         server_ip = server_ip.eql?('localhost') ? '127.0.0.1' : server_ip
 
-        describe IPAddr.new(DMZ_SUBNET) === IPAddr.new(server_ip) do
+        describe IPAddr.new(dmz_subnet) === IPAddr.new(server_ip) do
           it { should be false}
         end unless (IPAddr.new(server_ip) rescue nil).nil?
 

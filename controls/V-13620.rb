@@ -22,13 +22,13 @@ uri: http://iase.disa.mil
 -----------------
 =end
 
-NGINX_CONF_FILE = attribute(
+nginx_conf_file = attribute(
   'nginx_conf_file',
   description: 'Path for the nginx configuration file',
   default: "/etc/nginx/nginx.conf"
 )
 
-DOD_APPROVED_PKIS= attribute(
+dod_approved_pkis= attribute(
   'dod_approved_pkis',
   description: 'DoD-approved PKIs (e.g., DoD PKI, DoD ECA, and DoD-approved external partners).',
   default: ['DoD',
@@ -89,7 +89,7 @@ control "V-13620" do
   approved PKIs (e.g., DoD PKI, DoD ECA, and DoD-approved external partners)."
 
   begin
-    nginx_conf_handle = nginx_conf(NGINX_CONF_FILE)
+    nginx_conf_handle = nginx_conf(nginx_conf_file)
 
     describe nginx_conf_handle do
       its ('params') { should_not be_empty }
@@ -107,7 +107,7 @@ control "V-13620" do
           its('subject.O') { should cmp 'U.S. Government' }
         end
         describe x509_certificate(cert.join).subject.CN[0..2] do
-          it { should be_in DOD_APPROVED_PKIS }
+          it { should be_in dod_approved_pkis }
         end
       end unless http.params['ssl_client_certificate'].nil?
     end
@@ -122,7 +122,7 @@ control "V-13620" do
           its('subject.O') { should cmp 'U.S. Government' }
         end
         describe x509_certificate(cert.join).subject.CN[0..2] do
-          it { should be_in DOD_APPROVED_PKIS }
+          it { should be_in dod_approved_pkis }
         end
       end unless server.params['ssl_client_certificate'].nil?
     end

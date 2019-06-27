@@ -22,7 +22,7 @@ uri: http://iase.disa.mil
 -----------------
 =end
 
-NGINX_OWNER = attribute(
+nginx_owner = attribute(
   'nginx_owner',
   description: "The Nginx owner",
   default: 'nginx'
@@ -73,7 +73,7 @@ control "V-2232" do
 
 
   begin
-    describe passwd.users(NGINX_OWNER).passwords do
+    describe passwd.users(nginx_owner).passwords do
       it { should_not cmp ['']}
     end
   rescue Exception => msg
