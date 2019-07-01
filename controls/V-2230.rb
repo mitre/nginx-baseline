@@ -103,7 +103,8 @@ control 'V-2230' do
       dirs.push(location.params['root']) unless location.params['root'].nil?
     end
 
-    dirs.flatten!.uniq!
+    dirs.flatten!
+    dirs.uniq!
 
     dirs.each do |dir|
       next unless directory(dir).exist?
