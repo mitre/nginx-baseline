@@ -109,7 +109,8 @@ control "V-26305" do
       webserver_roots.push(location.params['root']) unless location.params['root'].nil?
     end
 
-    webserver_roots.flatten!.uniq!
+    webserver_roots.flatten!
+    webserver_roots.uniq!
 
     describe file(nginx_conf_handle.params['pid'].join) do
       it { should exist }

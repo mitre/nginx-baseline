@@ -101,7 +101,8 @@ control "V-6577" do
       webserver_roots.push(location.params['root']) unless location.params['root'].nil?
     end
 
-    webserver_roots.flatten!.uniq!
+    webserver_roots.flatten!
+    webserver_roots.uniq!
 
     services = command('systemctl list-unit-files --type service').stdout.scan(/^(.+).service/).flatten
 
