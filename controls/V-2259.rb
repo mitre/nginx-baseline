@@ -110,6 +110,7 @@ control "V-2259" do
   /var/log/nginx        root WebAdmin  750/640
   "
 
+  # TODO: should we consider the sticky bits on this? see previous commit
   begin
     authorized_sa_user_list = sys_admin.clone << nginx_owner
     authorized_sa_group_list = sys_admin_group.clone << nginx_group
@@ -118,72 +119,95 @@ control "V-2259" do
       describe file('/usr/sbin/nginx') do
         its('owner') { should be_in authorized_sa_user_list }
         its('group') { should be_in authorized_sa_group_list }
-        its('mode') { should cmp <= 0550 }
+        it { should_not be_writable }
+        it { should_not be_readable.by('others') }
+        it { should_not be_executable.by('others') }
       end
       describe file('/usr/sbin/nginx') do
         it { should be_owned_by nginx_owner }
         its('group') { should cmp nginx_group }
-        its('mode') { should cmp <= 0550 }
+        it { should_not be_writable }
+        it { should_not be_readable.by('others') }
+        it { should_not be_executable.by('others') }
       end
     end
     describe.one do
       describe file('/etc/nginx/') do
         its('owner') { should be_in authorized_sa_user_list }
         its('group') { should be_in authorized_sa_group_list }
-        its('mode') { should cmp <= 0770 }
+        it { should_not be_readable.by('others') }
+        it { should_not be_writable.by('others') }
+        it { should_not be_executable.by('others') }
       end
       describe file('/etc/nginx/') do
         it { should be_owned_by nginx_owner }
         its('group') { should cmp nginx_group }
-        its('mode') { should cmp <= 0660 }
+        it { should_not be_executable }
+        it { should_not be_readable.by('others') }
+        it { should_not be_writable.by('others') }
       end
     end
     describe.one do
       describe file('/etc/nginx/conf.d') do
         its('owner') { should be_in authorized_sa_user_list }
         its('group') { should be_in authorized_sa_group_list }
-        its('mode') { should cmp <= 0770 }
+        it { should_not be_readable.by('others') }
+        it { should_not be_writable.by('others') }
+        it { should_not be_executable.by('others') }
       end
       describe file('/etc/nginx/conf.d') do
         it { should be_owned_by nginx_owner }
         its('group') { should cmp nginx_group }
-        its('mode') { should cmp <= 0660 }
+        it { should_not be_executable }
+        it { should_not be_readable.by('others') }
+        it { should_not be_writable.by('others') }
       end
     end
     describe.one do
       describe file('/etc/nginx/modules') do
         its('owner') { should be_in authorized_sa_user_list }
         its('group') { should be_in authorized_sa_group_list }
-        its('mode') { should cmp <= 0770 }
+        it { should_not be_readable.by('others') }
+        it { should_not be_writable.by('others') }
+        it { should_not be_executable.by('others') }
       end
       describe file('/etc/nginx/modules') do
         it { should be_owned_by nginx_owner }
         its('group') { should cmp nginx_group }
-        its('mode') { should cmp <= 0660 }
+        it { should_not be_executable }
+        it { should_not be_readable.by('others') }
+        it { should_not be_writable.by('others') }
       end
     end
     describe.one do
       describe file('/usr/share/nginx/html') do
         its('owner') { should be_in authorized_sa_user_list }
         its('group') { should be_in authorized_sa_group_list }
-        its('mode') { should cmp <= 1775 }
+        it { should_not be_writable.by('others') }
       end
       describe file('/usr/share/nginx/html') do
         it { should be_owned_by nginx_owner }
         its('group') { should cmp nginx_group }
-        its('mode') { should cmp <= 0664 }
+        it { should_not be_executable }
+        it { should_not be_writable.by('others') }
       end
     end
     describe.one do
       describe file('/var/log/nginx') do
         its('owner') { should be_in authorized_sa_user_list }
         its('group') { should be_in authorized_sa_group_list }
-        its('mode') { should cmp <= 0750 }
+        it { should_not be_writable.by('group') }
+        it { should_not be_readable.by('others') }
+        it { should_not be_writable.by('others') }
+        it { should_not be_executable.by('others') }
       end
       describe file('/var/log/nginx') do
         it { should be_owned_by nginx_owner }
         its('group') { should cmp nginx_group }
-        its('mode') { should cmp <= 0640 }
+        it { should_not be_executable }
+        it { should_not be_writable.by('group') }
+        it { should_not be_readable.by('others') }
+        it { should_not be_writable.by('others') }
       end
     end
 

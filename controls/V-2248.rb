@@ -117,7 +117,9 @@ control "V-2248" do
       describe file(file) do
         its('owner') { should be_in authorized_sa_user_list }
         its('group') { should be_in authorized_sa_group_list }
-        its('mode')  { should cmp <= 0660 }
+        it { should_not be_executable }
+        it { should_not be_readable.by('others') }
+        it { should_not be_writable.by('others') }
       end
     end
 
