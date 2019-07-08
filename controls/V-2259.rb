@@ -178,6 +178,9 @@ control "V-2259" do
         it { should_not be_readable.by('others') }
         it { should_not be_writable.by('others') }
       end
+      describe file('/etc/nginx/modules') do
+        it { should_not exist }
+      end
     end
     describe.one do
       describe file('/usr/share/nginx/html') do
