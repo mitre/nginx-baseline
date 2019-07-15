@@ -94,9 +94,11 @@ control "V-2255" do
     htpasswd = command('find / -name .htpasswd').stdout.chomp
     htpasswd.split.each do |htpwd|
       describe file(htpwd) do
-        its('mode') { should cmp <= 0550 }
         its('owner') { should be_in authorized_sa_user_list }
         its('group') { should be_in authorized_sa_group_list }
+        it { should_not be_writable }
+        it { should_not be_readable.by('others') }
+        it { should_not be_executable.by('others') }
       end
     end
 
