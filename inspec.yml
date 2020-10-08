@@ -6,5 +6,6 @@ copyright_email: hello@dev-sec.io
 license: Apache 2 license
 summary: Test-suite for best-practice nginx hardening
 version: 2.0.2
+inspec_version: ">= 4.0"
 supports:
   - os-family: unix
