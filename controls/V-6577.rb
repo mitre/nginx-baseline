@@ -22,13 +22,6 @@ uri: http://iase.disa.mil
 -----------------
 =end
 
-
-nginx_conf_file = attribute(
-  'nginx_conf_file',
-  description: 'define path for the nginx configuration file',
-  default: "/etc/nginx/nginx.conf"
-)
-
 only_if do
   package('nginx').installed? || command('nginx').exist?
 end
@@ -80,6 +73,9 @@ control "V-6577" do
   Confirm that the additional service or application is not installed on the
   same partition as the operating systems root directory or the web document
   root. If it is, this is a finding."
+
+  nginx_conf_file = input('nginx_conf_file')
+
   begin
     # collect root directores from nginx_conf
     webserver_roots = []

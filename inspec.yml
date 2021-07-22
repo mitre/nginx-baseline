@@ -9,3 +9,123 @@ version: 2.0.3
 inspec_version: ">= 4.0"
 supports:
   - os-family: unix
+
+inputs:
+  - name: nginx_conf_file
+    description: Path for the nginx configuration file
+    type: String
+    value: '/etc/nginx/nginx.conf'
+
+  - name: nginx_backup_repository
+    description: Path to nginx backup repository
+    type: String
+    value: '/usr/share/nginx/html'
+
+  - name: dmz_subnet
+    description: Subnet of the DMZ
+    type: String
+    value: '62.0.0.0/24'
+
+  - name: nginx_min_ver
+    description: Minimum Web vendor-supported version.
+    type: String
+    value: '1.12.0'
+
+  - name: nginx_owner
+    description: Nginx owner
+    type: String
+    value: 'nginx'
+
+  - name: nginx_group
+    description: The Nginx group
+    type: String
+    value: 'nginx'
+
+  - name: sys_admin
+    description: The system adminstrator
+    type: Array
+    value: ['root','centos']
+
+  - name: sys_admin_group
+    description: The system adminstrator group
+    type: String
+    value: 'root'
+
+  - name: authorized_user_list
+    description: List of non admin user accounts
+    type: Array
+    value: ['user']
+
+  - name: monitoring_software
+    description: Monitoring software for CGI or equivalent programs
+    type: Array
+    value: ['audit', 'auditd']
+
+  - name: disallowed_packages_list
+    description: List of disallowed packages
+    type: Array
+    value: ['postfix']
+
+  - name: disallowed_compiler_list
+    description: List of disallowed compilers
+    type: Array
+    value: ['gcc']
+
+  - name: dod_approved_pkis
+    description: DoD-approved PKIs (e.g., DoD PKI, DoD ECA, and DoD-approved external partners
+    type: Array
+    value: ['DoD', 'ECA']
+
+  - name: nginx_disallowed_file_list
+    description: File list of  documentation, sample code, example applications, and tutorials
+    type: Array
+    value: [ '/usr/share/man/man8/nginx.8.gz']
+
+  - name: nginx_allowed_file_list
+    description: File list of allowed documentation, sample code, example applications, and tutorials
+    type: Array
+    value: []
+
+  - name: nginx_authorized_modules
+    description: List of  authorized nginx modules
+    type: Array
+    value: ['http_addition',
+     'http_auth_request',
+     'http_dav',
+     'http_flv',
+     'http_gunzip',
+     'http_gzip_static',
+     'http_mp4',
+     'http_random_index',
+     'http_realip',
+     'http_secure_link',
+     'http_slice',
+     'http_ssl',
+     'http_stub_status',
+     'http_sub',
+     'http_v2',
+     'mail_ssl',
+     'stream_realip',
+     'stream_ssl',
+     'stream_ssl_preread'
+     ]
+
+  - name: nginx_unauthorized_modules
+    description: List of  unauthorized nginx modules
+    type: Array
+    value: []
+
+  - name: nginx_path
+    description: Path for the nginx binary
+    type: String
+    value: '/usr/sbin/nginx'
+
+  - name: ocsp_server
+    description: domain and port to the OCSP Server
+    type: String
+    value: 'login.live.com:443'
+
+  - name: crl_udpate_frequency
+    description: Frequency at which CRL is updated in days
+    type: Numeric
+    value: 7

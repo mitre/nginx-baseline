@@ -22,30 +22,6 @@ uri: http://iase.disa.mil
 -----------------
 =end
 
-nginx_owner = attribute(
-  'nginx_owner',
-  description: "The Nginx owner",
-  default: 'nginx'
-)
-
-sys_admin = attribute(
-  'sys_admin',
-  description: "The system adminstrator",
-  default: ['root']
-)
-
-nginx_group = attribute(
-  'nginx_group',
-  description: "The Nginx group",
-  default: 'nginx'
-)
-
-sys_admin_group = attribute(
-  'sys_admin_group',
-  description: "The system adminstrator group",
-  default: ['root']
-)
-
 only_if do
   package('nginx').installed? || command('nginx').exist?
 end
@@ -85,6 +61,14 @@ control "V-2255" do
 
   tag "fix": "The SA or Web Manager account
   should own the htpasswd file and permissions should be set to 550."
+
+  nginx_owner = input('nginx_owner')
+
+  sys_admin = input('sys_admin')
+
+  nginx_group = input('nginx_group')
+
+  sys_admin_group = input('sys_admin_group')
 
   begin
 

@@ -22,18 +22,6 @@ uri: http://iase.disa.mil
 -----------------
 =end
 
-nginx_conf_file = attribute(
-  'nginx_conf_file',
-  description: 'Path for the nginx configuration file',
-  default: "/etc/nginx/nginx.conf"
-)
-
-nginx_backup_repository = attribute(
-  'nginx_backup_repository',
-  description: 'Path for the nginx home directory',
-  default: '/usr/share/nginx/html'
-)
-
 only_if do
   package('nginx').installed? || command('nginx').exist?
 end
@@ -81,6 +69,10 @@ control 'V-2230' do
 
   tag "fix": "Ensure that CGI backup scripts are not left on the production
   web server."
+
+  nginx_conf_file = input('nginx_conf_file')
+
+  nginx_backup_repository = input('nginx_backup_repository')
 
   begin
     dirs = ['/home', nginx_backup_repository]

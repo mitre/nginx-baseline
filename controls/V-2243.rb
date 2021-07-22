@@ -22,19 +22,6 @@ uri: http://iase.disa.mil
 -----------------
 =end
 
-
-dmz_subnet= attribute(
-  'dmz_subnet',
-  description: 'Subnet of the DMZ',
-  default: '62.0.0.0/24'
-)
-
-nginx_conf_file = attribute(
-  'nginx_conf_file',
-  description: 'Path for the nginx configuration file',
-  default: "/etc/nginx/nginx.conf"
-)
-
 only_if do
   package('nginx').installed? || command('nginx').exist?
 end
@@ -71,6 +58,10 @@ control "V-2243" do
   it from the internal general population LAN."
 
   require "ipaddr"
+
+  dmz_subnet = input('dmz_subnet')
+
+  nginx_conf_file = input('nginx_conf_file')
 
   # collect and test each listen IPs from nginx_conf
 

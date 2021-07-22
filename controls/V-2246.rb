@@ -22,19 +22,6 @@ uri: http://iase.disa.mil
 -----------------
 =end
 
-
-nginx_min_ver = attribute(
-  'nginx_min_ver',
-  description: 'Minimum Web vendor-supported version.',
-  default: '1.12.0'
-)
-
-nginx_path= attribute(
-  'nginx_path',
-  description: 'Path for the nginx configuration file',
-  default: "/usr/sbin"
-)
-
 only_if do
   package('nginx').installed? || command('nginx').exist?
 end
@@ -73,6 +60,10 @@ control "V-2246" do
 
   tag "fix": "Install the current version of the web server software and
   maintain appropriate service packs and patches."
+
+  nginx_min_ver = input('nginx_min_ver')
+
+  nginx_path = input('nginx_path')
 
   begin
     describe nginx do

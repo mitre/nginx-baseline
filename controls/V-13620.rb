@@ -22,19 +22,6 @@ uri: http://iase.disa.mil
 -----------------
 =end
 
-nginx_conf_file = attribute(
-  'nginx_conf_file',
-  description: 'Path for the nginx configuration file',
-  default: "/etc/nginx/nginx.conf"
-)
-
-dod_approved_pkis= attribute(
-  'dod_approved_pkis',
-  description: 'DoD-approved PKIs (e.g., DoD PKI, DoD ECA, and DoD-approved external partners).',
-  default: ['DoD',
-            'ECA']
-)
-
 only_if do
   package('nginx').installed? || command('nginx').exist?
 end
@@ -87,6 +74,10 @@ control "V-13620" do
 
   tag "fix": "Configure the web server’s trust store to trust only DoD-
   approved PKIs (e.g., DoD PKI, DoD ECA, and DoD-approved external partners)."
+
+  nginx_conf_file = input('nginx_conf_file')
+
+  dod_approved_pkis = input('dod_approved_pkis')
 
   begin
     nginx_conf_handle = nginx_conf(nginx_conf_file)

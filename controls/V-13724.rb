@@ -22,13 +22,6 @@ uri: http://iase.disa.mil
 -----------------
 =end
 
-
-nginx_conf_file = attribute(
-  'nginx_conf_file',
-  description: 'Path for the nginx configuration file',
-  default: "/etc/nginx/nginx.conf"
-)
-
 only_if do
   package('nginx').installed? || command('nginx').exist?
 end
@@ -79,6 +72,8 @@ control "V-13724" do
   client_body_timeout   10s;
 
   client_header_timeout 10s;"
+
+  nginx_conf_file = input('nginx_conf_file')
 
   begin
     nginx_conf_handle = nginx_conf(nginx_conf_file)

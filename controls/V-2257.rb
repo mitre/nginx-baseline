@@ -22,25 +22,6 @@ uri: http://iase.disa.mil
 -----------------
 =end
 
-
-sys_admin = attribute(
-  'sys_admin',
-  description: "The system adminstrator",
-  default: ['root']
-)
-
-nginx_owner = attribute(
-  'nginx_owner',
-  description: "The Nginx owner",
-  default: 'nginx'
-)
-
-nginx_conf_file = attribute(
-  'nginx_conf_file',
-  description: 'define path for the nginx configuration file',
-  default: "/etc/nginx/nginx.conf"
-)
-
 only_if do
   package('nginx').installed? || command('nginx').exist?
 end
@@ -83,6 +64,12 @@ control "V-2257" do
 
   tag "fix": "Document the administrative users and groups which have access
   rights to the web server in the web site SOP or in an equivalent document."
+
+  sys_admin = input('sys_admin')
+
+  nginx_owner = input('nginx_owner')
+
+  nginx_conf_file = input('nginx_conf_file')
 
   begin
     authorized_sa_user_list = sys_admin.clone << nginx_owner

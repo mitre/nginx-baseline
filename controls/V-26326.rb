@@ -22,12 +22,6 @@ uri: http://iase.disa.mil
 -----------------
 =end
 
-nginx_conf_file = attribute(
-  'nginx_conf_file',
-  description: 'Path for the nginx configuration file',
-  default: "/etc/nginx/nginx.conf"
-)
-
 only_if do
   package('nginx').installed? || command('nginx').exist?
 end
@@ -75,6 +69,8 @@ control "V-26326" do
 
   tag "fix": "Edit the nginx.conf file and set the ""listen"" directive to
   listen on a specific IP address and port. "
+
+  nginx_conf_file = input('nginx_conf_file')
 
   begin
 

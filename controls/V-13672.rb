@@ -22,24 +22,6 @@ uri: http://iase.disa.mil
 -----------------
 =end
 
-nginx_conf_file = attribute(
-  'nginx_conf_file',
-  description: 'Path for the nginx configuration file',
-  default: "/etc/nginx/nginx.conf"
-)
-
-ocsp_server = attribute(
-  'ocsp_server',
-  description: 'domain and port to the OCSP Server ',
-  default: 'login.live.com:443'
-)
-
-crl_udpate_frequency= attribute(
-  'crl_udpate_frequency',
-  description: 'Frequency at which CRL is updated in days',
-  default: 7
-)
-
 only_if do
   package('nginx').installed? || command('nginx').exist?
 end
@@ -88,6 +70,12 @@ control "V-13672" do
   tag "fix": "Configure DoD Private Web Servers to conduct certificate
   revocation checking utilizing certificate revocation lists (CRLs) or Online
   Certificate Status Protocol (OCSP)."
+
+  nginx_conf_file = input('nginx_conf_file')
+
+  ocsp_server = input('ocsp_server')
+
+  crl_udpate_frequency = input('crl_udpate_frequency')
 
   begin
     require 'time'

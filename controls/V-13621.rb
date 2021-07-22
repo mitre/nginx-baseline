@@ -22,44 +22,6 @@ uri: http://iase.disa.mil
 -----------------
 =end
 
-
-nginx_disallowed_file_list = attribute(
-  'nginx_disallowed_file_list',
-  description: 'File list of  documentation, sample code, example applications, and tutorials.',
-  default: ["/usr/share/man/man8/nginx.8.gz"]
-)
-
-nginx_exception_files = attribute(
-  'nginx_allowed_file_list',
-  description: 'File list of allowed documentation, sample code, example applications, and tutorials.',
-  default: [
-           ]
-)
-
-nginx_owner = attribute(
-  'nginx_owner',
-  description: "The Nginx owner",
-  default: 'nginx'
-)
-
-sys_admin = attribute(
-  'sys_admin',
-  description: "The system adminstrator",
-  default: ['root']
-)
-
-nginx_group = attribute(
-  'nginx_group',
-  description: "The Nginx group",
-  default: 'nginx'
-)
-
-sys_admin_group = attribute(
-  'sys_admin_group',
-  description: "The system adminstrator group",
-  default: ['root']
-)
-
 only_if do
   package('nginx').installed? || command('nginx').exist?
 end
@@ -103,6 +65,18 @@ control "V-13621" do
   training or other such purposes, have permissions or set the permissions to
   only allow access to authorized users. If any sample files are found on the
   web server, this is a finding."
+
+  nginx_disallowed_file_list = input('nginx_disallowed_file_list')
+
+  nginx_exception_files = input('nginx_allowed_file_list')
+
+  nginx_owner = input('nginx_owner')
+
+  sys_admin = input('sys_admin')
+
+  nginx_group = input('nginx_group')
+
+  sys_admin_group = input('sys_admin_group')
 
   begin
 

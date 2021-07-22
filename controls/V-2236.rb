@@ -22,12 +22,6 @@ uri: http://iase.disa.mil
 -----------------
 =end
 
-disallowed_compiler_list = attribute(
-  'disallowed_compiler_list',
-  description: "List of disallowed compilers",
-  default: []
-)
-
 only_if do
   package('nginx').installed? || command('nginx').exist?
 end
@@ -64,6 +58,9 @@ control "V-2236" do
   production environment or the compiler is embedded and will break the suite
   if removed, document the compiler installation with the ISSO/ISSM and ensure
   that the compiler is restricted to only administrative users."
+
+
+  disallowed_compiler_list = input('disallowed_compiler_list')
 
   begin
     if inspec.os.family.eql?("redhat")

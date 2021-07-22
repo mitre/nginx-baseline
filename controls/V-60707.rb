@@ -22,12 +22,6 @@ uri: http://iase.disa.mil
 -----------------
 =end
 
-nginx_conf_file = attribute(
-  'nginx_conf_file',
-  description: 'Path for the nginx configuration file',
-  default: "/etc/nginx/nginx.conf"
-)
-
 only_if do
   package('nginx').installed? || command('nginx').exist?
 end
@@ -114,6 +108,8 @@ control "V-60707" do
    # @STRENGTH：sort the current cipher list in order of encryption algorithm key length.
   }
   "
+
+  nginx_conf_file = input('nginx_conf_file')
 
   begin
     disabled_ssl_ciphers = ['aNULL', 'eNULL', 'EXPORT', 'DES', 'MD5', 'PSK', 'RC4']

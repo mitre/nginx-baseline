@@ -22,12 +22,6 @@ uri: http://iase.disa.mil
 -----------------
 =end
 
-monitoringsoftware = attribute(
-  'monitoring_software',
-  description: "Monitoring software for CGI or equivalent programs",
-  default: ['audit', 'auditd']
-)
-
 only_if do
   package('nginx').installed? || command('nginx').exist?
 end
@@ -65,6 +59,8 @@ control "V-2271" do
   tag "fix": "Use a monitoring tool to monitor changes to the CGI or
   equivalent directory. This can be done with something as simple as a script or
   batch file that would identify a change in the file."
+
+  monitoringsoftware = input('monitoring_software')
 
   begin
     describe.one do

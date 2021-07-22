@@ -22,18 +22,6 @@ uri: http://iase.disa.mil
 -----------------
 =end
 
-sys_admin = attribute(
-  'sys_admin',
-  description: "The system adminstrator",
-  default: ['root']
-)
-
-nginx_owner = attribute(
-  'nginx_owner',
-  description: "The Nginx owner",
-  default: 'nginx'
-)
-
 only_if do
   package('nginx').installed? || command('nginx').exist?
 end
@@ -80,7 +68,9 @@ control "V-2247" do
   directory tree, the shell, or other operating system functions and
   utilities."
 
+  sys_admin = input('sys_admin')
 
+  nginx_owner = input('nginx_owner')
 
   begin
   

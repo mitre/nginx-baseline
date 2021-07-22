@@ -22,36 +22,6 @@ uri: http://iase.disa.mil
 -----------------
 =end
 
-nginx_conf_file = attribute(
-  'nginx_conf_file',
-  description: 'define path for the nginx configuration file',
-  default: "/etc/nginx/nginx.conf"
-)
-
-nginx_owner = attribute(
-  'nginx_owner',
-  description: "The Nginx owner",
-  default: 'nginx'
-)
-
-sys_admin = attribute(
-  'sys_admin',
-  description: "The system adminstrator",
-  default: ['root']
-)
-
-nginx_group = attribute(
-  'nginx_group',
-  description: "The Nginx group",
-  default: 'nginx'
-)
-
-sys_admin_group = attribute(
-  'sys_admin_group',
-  description: "The system adminstrator group",
-  default: ['root']
-)
-
 only_if do
   package('nginx').installed? || command('nginx').exist?
 end
@@ -100,6 +70,18 @@ control "V-2248" do
   If accounts other than the SA, the web manager, or the web manager designees
   have access to the web administration tool or control files, this is a
   finding. "
+
+  nginx_conf_file = input('nginx_conf_file')
+
+  nginx_owner = input('nginx_owner')
+
+  sys_admin = input('sys_admin')
+
+  nginx_conf_file = input('nginx_conf_file')
+
+  nginx_group = input('nginx_group')
+
+  sys_admin_group = input('sys_admin_group')
 
   begin
 

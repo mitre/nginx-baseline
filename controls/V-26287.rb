@@ -22,12 +22,6 @@ uri: http://iase.disa.mil
 -----------------
 =end
 
-nginx_path= attribute(
-  'nginx_path',
-  description: 'Path for the nginx configuration file',
-  default: "/usr/sbin/nginx"
-)
-
 only_if do
   package('nginx').installed? || command('nginx').exist?
 end
@@ -64,6 +58,8 @@ control "V-26287" do
 
   Use the configure script (available in the nginx download package) to exclude
   modules using the --without {module_name} option to reject unneeded modules."
+
+  nginx_path = input('nginx_path')
 
   begin
     describe nginx do

@@ -22,13 +22,6 @@ uri: http://iase.disa.mil
 -----------------
 =end
 
-
-nginx_conf_file = attribute(
-  'nginx_conf_file',
-  description: 'Path for the nginx configuration file',
-  default: "/etc/nginx/nginx.conf"
-)
-
 only_if do
   package('nginx').installed? || command('nginx').exist?
 end
@@ -71,6 +64,8 @@ control "V-13727" do
   ""worker_processes"" to the value of auto or a value of 1 or higher:
 
   worker_processes auto;"
+
+  nginx_conf_file = input('nginx_conf_file')
 
   begin
     describe nginx_conf(nginx_conf_file).params['worker_processes'] do

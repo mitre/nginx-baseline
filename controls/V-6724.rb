@@ -22,12 +22,6 @@ uri: http://iase.disa.mil
 -----------------
 =end
 
-nginx_conf_file = attribute(
-  'nginx_conf_file',
-  description: 'define path for the nginx configuration file',
-  default: "/etc/nginx/nginx.conf"
-)
-
 only_if do
   package('nginx').installed? || command('nginx').exist?
 end
@@ -65,6 +59,8 @@ control "V-6724" do
   Note: The default value is set to on."
 
   tag "fix": "server_tokens must be set to 'off'."
+
+  nginx_conf_file = input('nginx_conf_file')
 
   begin
     nginx_conf_handle = nginx_conf(nginx_conf_file)

@@ -22,44 +22,6 @@ uri: http://iase.disa.mil
 -----------------
 =end
 
-nginx_path= attribute(
-  'nginx_path',
-  description: 'Path for the nginx configuration file',
-  default: "/usr/sbin/nginx"
-)
-
-nginx_authorized_modules= attribute(
-  'nginx_authorized_modules',
-  description: 'List of  authorized nginx modules.',
-  default: [
-            "http_addition",
-            "http_auth_request",
-            "http_dav",
-            "http_flv",
-            "http_gunzip",
-            "http_gzip_static",
-            "http_mp4",
-            "http_random_index",
-            "http_realip",
-            "http_secure_link",
-            "http_slice",
-            "http_ssl",
-            "http_stub_status",
-            "http_sub",
-            "http_v2",
-            "mail_ssl",
-            "stream_realip",
-            "stream_ssl",
-            "stream_ssl_preread"
-           ]
-)
-nginx_unauthorized_modules= attribute(
-  'nginx_unauthorized_modules',
-  description: 'List of  unauthorized nginx modules.',
-  default: [
-           ]
-)
-
 only_if do
   package('nginx').installed? || command('nginx').exist?
 end
@@ -100,6 +62,12 @@ control "V-26285" do
 
   Use the configure script (available in the nginx download package) to exclude
   modules using the --without {module_name} option to reject unneeded modules."
+
+  nginx_path = input('nginx_path')
+
+  nginx_authorized_modules = input('nginx_authorized_modules')
+
+  nginx_unauthorized_modules = input('nginx_unauthorized_modules')
 
   begin
     describe nginx do

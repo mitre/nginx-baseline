@@ -22,12 +22,6 @@ uri: http://iase.disa.mil
 -----------------
 =end
 
-nginx_conf_file  = attribute(
-  'nginx_conf_file',
-  description: 'Path for the nginx configuration file',
-  default: "/etc/nginx/nginx.conf"
-)
-
 only_if do
   package('nginx').installed? || command('nginx').exist?
 end
@@ -67,6 +61,8 @@ If the entry is not found, this is a finding."
          ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
   }
   "
+
+  nginx_conf_file = input('nginx_conf_file')
 
   begin
     nginx_conf_handle = nginx_conf(nginx_conf_file)
