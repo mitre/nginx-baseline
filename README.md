@@ -7,6 +7,71 @@ It is intended and recommended that InSpec run this profile from a __"runner"__ 
 
 The latest versions and installation options are available at the [InSpec](http://inspec.io/) site.
 
+## Tailoring to Your Environment
+The following inputs must be configured in an inputs ".yml" file for the profile to run correctly for your specific environment. More information about InSpec inputs can be found in the [InSpec Profile Documentation](https://www.inspec.io/docs/reference/profiles/).
+
+```yaml
+# Path for the nginx configuration file
+nginx_conf_file: ''
+
+# Path to nginx backup repository
+nginx_backup_repository: ''
+
+# Subnet of the DMZ
+dmz_subnet: ''
+
+# Minimum Web vendor-supported version.
+nginx_min_ver: ''
+
+# Nginx owner
+nginx_owner: ''
+
+# The Nginx group
+nginx_group: ''
+
+# The system adminstrator
+sys_admin: []
+
+# The system adminstrator group
+sys_admin_group: ''
+
+# List of non admin user accounts
+authorized_user_list: []
+
+# Monitoring software for CGI or equivalent programs
+monitoring_software: []
+
+# List of disallowed packages
+disallowed_packages_list: []
+
+# disallowed_compiler_list
+disallowed_compiler_list: []
+
+# DoD-approved PKIs (e.g., DoD PKI, DoD ECA, and DoD-approved external partners
+dod_approved_pkis: []
+
+# File list of  documentation, sample code, example applications, and tutorials
+nginx_disallowed_file_list: []
+
+# File list of allowed documentation, sample code, example applications, and tutorials
+nginx_allowed_file_list: []
+
+# List of  authorized nginx modules
+nginx_authorized_modules: []
+
+# List of unauthorized nginx modules
+nginx_unauthorized_modules: []
+
+# Path for the nginx binary
+nginx_path: ''
+
+# domain and port to the OCSP Server
+ocsp_server: ''
+
+# crl_udpate_frequency
+crl_udpate_frequency: 7
+```
+
 # Running This Baseline Directly from Github
 
 ```
